@@ -14,11 +14,11 @@ def download():
 
     # Save to file
     print(f"saving {save_as}")
-    with open(save_as, 'wb') as download:
+    with open(f"./data/{save_as}", 'wb') as download:
         download.write(content)
 
 def extract():
-    with py7zr.SevenZipFile("AE_ChessAnalytics.7z", 'r') as archive:
+    with py7zr.SevenZipFile(f"./data/{save_as}", 'r') as archive:
         archive.extractall(path="./data/")
 
 if __name__=='__main__':

@@ -1,1 +1,1 @@
-pip install pylzma
+pip install py7zr
