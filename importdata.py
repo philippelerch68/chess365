@@ -21,10 +21,3 @@ def extract():
     with py7zr.SevenZipFile(f"./data/{save_as}", 'r') as archive:
         archive.extractall(path="./data/")
 
-if __name__=='__main__':
-    print(" starting")
-    download()
-    print(" done ")
-    print("extract data")
-    extract()
-    print("end extraction")
