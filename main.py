@@ -19,7 +19,7 @@ if __name__=='__main__':
     print("End extraction          ", end='\r')
     print("Creating games csv", end='\r')
     flog = open(games_to_csv, "w")
-    flog.write("Event,Site,Date,Round,White,Black,Result,WhiteElo,BlackElo,ECO")
+    flog.write("Event,Site,Date,Round,White,Black,Result,WhiteElo,BlackElo,ECO,Game")
     flog.write("\n")                          
     flog.close()
     print("Parsing, cleaning saving in games.csv", end='\r')
