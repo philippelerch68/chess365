@@ -61,7 +61,7 @@ Location
     id (PK) Int
     *place_name (event) String
     *city_id (Site) (FK) Int
-    County_id (FK) Int
+    *County_id (FK) Int
 
 
 Events
@@ -116,7 +116,7 @@ game (BLOC)
 
 
 
-
+*** Unique keys
 
 
 
