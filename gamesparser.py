@@ -7,12 +7,11 @@ from config import *
 #, 'game'
 list_keys=['Event', 'Site', 'Date', 'Round', 'White', 'Black', 'Result', 'WhiteElo', 'BlackElo', 'ECO']
 file_error = []
+
 def parsing_file_data(f):
-    
     file = open(games_dir+f,encoding='utf-8', errors='ignore')
     line =''
     lines = ''
-   
     try:
         lines = file.readlines()
         file.close()
@@ -24,28 +23,26 @@ def parsing_file_data(f):
     keys = []
     a = 0
     count = 0
-    flog = open("players.csv", "a")
+    flog = open(games_to_csv, "a")
     
     #flog.write(f"'file_name': '{f}',")
     for line in lines:
         count+=1
         a+=1
-        #print("->" +str(line))
+       
+        # Parsing, cleaning
         if line.startswith('[') and line.rstrip('\n').endswith(']'):
             line = line.replace('[','')
             line = line.replace(', "]','"')
             line = line.replace(']','')
             line = line.replace(' "',';"')
             line = line.replace(', "',',""')
-            
-            
-            
             arr = line.split(';')
             exist =","
             key = arr[0]
             keys.append(key)
             value = arr[1]
-            
+            #formating csv file datas
             if(key in list_keys):
                 flog.write(value.rstrip())
             if((key in list_keys) and key!='ECO'):
@@ -69,6 +66,7 @@ def parsing_file_data(f):
     return f,keys, value,
     
 
+#Read each file in folder and parsing data (parsing_file_data(f))
 def parsing():
     nbr_files = 0
     error_count = 0
@@ -76,13 +74,15 @@ def parsing():
     files = sorted(os.listdir(games_dir), reverse=False)
     for f in files:
         nbr_files+=1
-        print(f" {nbr_files} {f}")
+        # print(f" {nbr_files} {f}")
+        print(f" Reading {nbr_files} {f}             ", end='\r')
+        
         f,keys, value = parsing_file_data(f)
         for key in keys:
             if(key not in keys_unique):
                 keys_unique.append(key)
     
-    print(keys_unique)
+    print(f"List of unique keys :{keys_unique}" )
         
         
    
