@@ -19,5 +19,8 @@ if __name__=='__main__':
 
 
 '''
-
+flog = open("players.csv", "w")
+flog.write("Event,Site,Date,Round,White,Black,Result,WhiteElo,BlackElo,ECO")
+flog.write("\n")                          
+flog.close()
 parsing()

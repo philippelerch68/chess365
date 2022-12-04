@@ -6,6 +6,8 @@
 ANALYSE
 =======
 
+Some field have uncompleted value
+        - [Date "2006.05.??"]
 
     GAMES FOLDERS
     *************
