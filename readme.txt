@@ -8,6 +8,7 @@ ANALYSE
 
 Some field have uncompleted value
         - [Date "2006.05.??"]
+        "9th Asian Continental","Olongapo City PHI","2010.04.28","8","Salem, AR Saleh","Li Hanbin,,"1-0","2483","2330","D47"   No name for li. only coma
 
     GAMES FOLDERS
     *************

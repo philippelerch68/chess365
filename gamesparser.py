@@ -25,6 +25,7 @@ def parsing_file_data(f):
     a = 0
     count = 0
     flog = open("players.csv", "a")
+    
     #flog.write(f"'file_name': '{f}',")
     for line in lines:
         count+=1
@@ -32,8 +33,13 @@ def parsing_file_data(f):
         #print("->" +str(line))
         if line.startswith('[') and line.rstrip('\n').endswith(']'):
             line = line.replace('[','')
+            line = line.replace(', "]','"')
             line = line.replace(']','')
             line = line.replace(' "',';"')
+            line = line.replace(', "',',""')
+            
+            
+            
             arr = line.split(';')
             exist =","
             key = arr[0]
@@ -58,6 +64,7 @@ def parsing_file_data(f):
         
     flog.write("\n")                          
     flog.close()
+  
     
     return f,keys, value,
     
