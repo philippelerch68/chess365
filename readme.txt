@@ -3,12 +3,28 @@
 
 @philippe
 
+FOLDERS
+*********
+Data
+ \Games
+ \Players
+games.csv  (Data from all file in Games folder. Parsing, cleaning and ready to be integrate in DB)
+
+
+1. readme.txt
+2. requierements.txt
+3. main.py             Start: importdata.py gamesparser.py.
+4. importdata.py       Download, unzip imported file.
+5. gamesparser.py      Parsing, cleaning, formating, saving datas in games.csv
+6. playerparser.py     read json players files in folder Players.
+
+
 ANALYSE
 =======
 
-Some field have uncompleted value
-        - [Date "2006.05.??"]
-        "9th Asian Continental","Olongapo City PHI","2010.04.28","8","Salem, AR Saleh","Li Hanbin,,"1-0","2483","2330","D47"   No name for li. only coma
+Some field have uncompleted value:
+        - [Date "2006.05.??"]  -> what we do ? 
+        "9th Asian Continental","Olongapo City PHI","2010.04.28","8","Salem, AR Saleh","Li Hanbin,,"1-0","2483","2330","D47" -> incomplet name. formating fixed.
 
     GAMES FOLDERS
     *************
