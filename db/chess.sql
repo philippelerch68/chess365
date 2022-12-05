@@ -8,10 +8,10 @@ CREATE TABLE player (id INTEGER NOT NULL,
 
 CREATE TABLE playerdetails (id INTEGER NOT NULL, 
                             player_id INTEGER NOT NULL,
-                            title INTEGER,
+                            title INTEGER, -- DIM
                             rank INTEGER,  
                             elo INTEGER, 
-                            federation VARCHAR(100),
+                            federation VARCHAR(100), -- DIM
                             games INTEGER,
                             page VARCHAR(200),
                             PRIMARY KEY (id),
@@ -20,8 +20,8 @@ CREATE TABLE playerdetails (id INTEGER NOT NULL,
                            
 CREATE TABLE event (id INTEGER NOT NULL, 
                     name VARCHAR(100), --event
-                    city VARCHAR(100), --site[0]
-                    country  VARCHAR(3), --site[1]
+                    city VARCHAR(100), --site[0] -- DIM
+                    country  VARCHAR(3), --site[1] -- DIM
                     PRIMARY KEY (id)
                    );
                    
