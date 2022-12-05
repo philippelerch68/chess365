@@ -43,3 +43,6 @@ CREATE TABLE game (id INTEGER NOT NULL,
                    FOREIGN KEY (black_player_id) REFERENCES player (id)
                    );
                               
+CREATE TABLE moves (id INTEGER NOT NULL,
+		    
+	);
