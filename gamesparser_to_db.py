@@ -89,6 +89,11 @@ def parsing_file_data(f,nbr_files,id_icrement):
                     flog = open('insert_error,txt', "a")
                     flog.write(f"{file} {sql} --")
                     flog.write("\n")
+                
+                if(status =='ok'):
+                    flog = open('insert_ok,txt', "a")
+                    flog.write(f"{file} {sql} --")
+                    flog.write("\n")
     
    
     #print("------END OF FILE  ----------")
