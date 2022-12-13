@@ -19,28 +19,33 @@ def insert_data(sql):
     
     # Commit your changes in the database
     conn.commit()
+    #print("Data inserted")
 
   except:
     # Rolling back in case of error
     conn.rollback()
+    print("Data insert ERROR !")
 
-  print("Data inserted")
+  
 
   # Closing the connection
   conn.close()
 
 
 '''
+
 CREATE TABLE `Datascientest`.`chess` (
-  `id` INT NOT NULL,
-  `Event` VARCHAR(100) NULL,
-  `Site` VARCHAR(100) NULL,
-  `Round` VARCHAR(100) NULL,
-  `White` VARCHAR(100) NULL,
-  `Black` VARCHAR(100) NULL,
-  `WhiteElo` VARCHAR(45) NULL,
-  `BlackElo` VARCHAR(45) NULL,
-  `ECO` VARCHAR(45) NULL,
-  `Game` BLOB NULL,
+  `id` INT(5) NOT NULL,
+  `Event` VARCHAR(40) NULL,
+  `Site` VARCHAR(30) NULL,
+  `Date` varchar(12) NULL,
+  `Round` VARCHAR(6) NULL,
+  `White` VARCHAR(35) NULL,
+  `Black` VARCHAR(35) NULL,
+  `Result` varchar(10) NULL,
+  `WhiteElo` VARCHAR(5) NULL,
+  `BlackElo` VARCHAR(5) NULL,
+  `ECO` VARCHAR(5) NULL,
+  `Game` mediumtext(2000) NULL,
   PRIMARY KEY (`id`));
 '''
