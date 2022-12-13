@@ -87,8 +87,7 @@ def parsing_file_data(f,nbr_files,id_icrement):
                 status=insert_data(sql)
                 if(status =='error'):
                     flog = open('insert_error,txt', "a")
-                    flog.write(f"{file} {sql}")
-                    flog.write("-------------")
+                    flog.write(f"{file} {sql} --")
                     flog.write("\n")
     
    
