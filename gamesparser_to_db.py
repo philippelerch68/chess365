@@ -55,14 +55,21 @@ def parsing_file_data(f,nbr_files,id_icrement):
             value = value.replace('\n',"")
             db_data = db_data + value +","
             
-            
+                      
                 
         # FOR GAME Value.   
-        if line.startswith('1.') and line.endswith('\n'):
+        if line.startswith('1') and line.endswith('\n'):
             key = 'Game'
             value = '"'+line+'"'
             #if((key in list_keys) and key!='ECO'):
             db_data = db_data + value
+            
+        if line.startswith('0') and line.endswith('\n'):
+            key = 'Game'
+            value = '"'+line+'"'
+            #if((key in list_keys) and key!='ECO'):
+            db_data = db_data + value
+            
             
             
         if(value!=''):
@@ -77,16 +84,14 @@ def parsing_file_data(f,nbr_files,id_icrement):
                 #print("----------------")
                 db_data=''
                 # INSERT DATA IN DB
-                #insert_data(sql)
-    '''
-    flog = open('insert_log,txt', "w")
-    flog.write(f"{sql}")
-    flog.write("-------------")
-    flog.write("\n")
-    '''
+                status=insert_data(sql)
+                if(status =='error'):
+                    flog = open('insert_error,txt', "a")
+                    flog.write(f"{file} {sql}")
+                    flog.write("-------------")
+                    flog.write("\n")
     
-    
-    insert_data(sql)
+   
     #print("------END OF FILE  ----------")
     #print(f"file read = {f},nbr_files = {nbr_files}, id_icrement={id_icrement}")
     return f,nbr_files,id_icrement

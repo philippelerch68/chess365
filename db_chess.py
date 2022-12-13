@@ -19,17 +19,21 @@ def insert_data(sql):
     
     # Commit your changes in the database
     conn.commit()
+    status = 'ok'
     #print("Data inserted")
 
   except:
     # Rolling back in case of error
     conn.rollback()
-    print("Data insert ERROR !")
+    status ='error'
+   
+    
 
   
 
   # Closing the connection
   conn.close()
+  return status
 
 
 '''
