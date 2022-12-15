@@ -1,3 +1,4 @@
 pip install py7zr
 pip install chess
 pip install pgn_parser
+pip install tqdm  # progress bar

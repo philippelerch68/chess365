@@ -43,8 +43,9 @@ def parsing_file_data(f,nbr_files,id_icrement):
         
           
         # Parsing, cleaning
-        if line.startswith('[') and line.rstrip('\n').endswith(']'):
+        if line.startswith('[') and line.rstrip('\n').endswith('"]'):
             line = line.replace('[','')
+            line = line.replace(' "]','"]')
             line = line.replace(', "]','"')
             line = line.replace(']','')
             line = line.replace(' "',';"')
@@ -60,17 +61,29 @@ def parsing_file_data(f,nbr_files,id_icrement):
         # FOR GAME Value.   
         if line.startswith('1') and line.endswith('\n'):
             key = 'Game'
+            #replace " in game data because making insert error
+            line=line.replace('"',"`")  
             value = '"'+line+'"'
-            #if((key in list_keys) and key!='ECO'):
             db_data = db_data + value
+            
+            
             
         if line.startswith('0') and line.endswith('\n'):
             key = 'Game'
             value = '"'+line+'"'
-            #if((key in list_keys) and key!='ECO'):
             db_data = db_data + value
             
-            
+        if line.startswith('{') and line.endswith('\n'):
+            key = 'Game'
+            value = '"'+line+'"'
+            db_data = db_data + value   
+        
+        if line.startswith('*') and line.endswith('\n'):
+            key = 'Game'
+            value = '"'+line+'"'
+            db_data = db_data + value 
+        
+
             
         if(value!=''):
             count+=1
@@ -86,14 +99,18 @@ def parsing_file_data(f,nbr_files,id_icrement):
                 # INSERT DATA IN DB
                 status=insert_data(sql)
                 if(status =='error'):
-                    flog = open('insert_error,txt', "a")
+                    flog = open('insert_error.txt', "a")
                     flog.write(f"{file} {sql} --")
                     flog.write("\n")
-                
+                    
+                '''
+                Log for  all successfull insert
                 if(status =='ok'):
-                    flog = open('insert_ok,txt', "a")
+                    flog = open('insesrt_ok,txt', "a")
                     flog.write(f"{file} {sql} --")
                     flog.write("\n")
+                '''
+                
     
    
     #print("------END OF FILE  ----------")
@@ -112,9 +129,9 @@ def parsing():
     for f in files:
         nbr_files+=1
         if (nbr_files<200):
-            #print(f" FILE : {f}")
-            for i in tqdm(range(100) ,ascii=" *",desc =f"{nbr_files}/{nbr_total_file}  {f}"):
-                f,nbr_files,id_icrement= parsing_file_data(f,nbr_files,id_icrement)
+            print(f" {nbr_files}/nbr_total_file ->  FILE : {f} ...")
+            
+            f,nbr_files,id_icrement= parsing_file_data(f,nbr_files,id_icrement)
            
         
    
