@@ -6,6 +6,7 @@ import numpy as np
 from config import *
 from importdata import *
 from gamesparser_to_db import *
+from playersparser_to_db import *
 import pathlib
 
 
@@ -21,5 +22,10 @@ if __name__=='__main__':
           
     print("----------------------------")
     print("IMPORTING folder games files to db")
-    parsing()
-    print("Parsing, cleaning saving  done")
+    games_parsing()
+    print("Games import done")
+
+    print("----------------------------")
+    print("IMPORTING folder players files to db")
+    players_parsing()
+    print("Games import done")

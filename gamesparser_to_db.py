@@ -2,7 +2,6 @@
 import re
 import array
 import os
-from tqdm import tqdm
 import pathlib
 import numpy as np
 from config import *
@@ -21,7 +20,7 @@ def file_count(games_dir):
     return initial_count
 
 
-def parsing_file_data(f,nbr_files,id_icrement,nbr_total_file):
+def gparsing_file_data(f,nbr_files,id_icrement,nbr_total_file):
     file = open(games_dir+f,encoding='utf-8', errors='ignore')
     line =''
     lines = ''
@@ -101,7 +100,7 @@ def parsing_file_data(f,nbr_files,id_icrement,nbr_total_file):
                 count=0
                 id_icrement+=1
                 db_data = db_data.replace('\n',"")   
-                sql = f"INSERT INTO chess(id,Event, Site, Date, Round, White, Black, Result, WhiteElo, BlackElo, ECO, Game) VALUES ({id_icrement},{db_data})"
+                sql = f"INSERT INTO chess(`id`,`Event`,`Site`,`Date`,`Round`,`White`,`Black`,`Result`,`WhiteElo`,`BlackElo`,`ECO`,`Game`) VALUES ({id_icrement},{db_data})"
                 #print(f"sql : {sql}")
                 #print("----------------")
                 db_data=''
@@ -129,8 +128,8 @@ def parsing_file_data(f,nbr_files,id_icrement,nbr_total_file):
     return f,nbr_files,id_icrement
     
 
-#Read each file in folder and parsing data (parsing_file_data(f))
-def parsing():
+#Read each file in folder and parsing data (gparsing_file_data(f))
+def games_parsing():
     id_icrement=0
     nbr_files = 0
     error_count = 0
@@ -140,8 +139,5 @@ def parsing():
     for f in files:
         nbr_files+=1
         if (nbr_files<nbr_total_file+1):
-            f,nbr_files,id_icrement= parsing_file_data(f,nbr_files,id_icrement,nbr_total_file)
+            f,nbr_files,id_icrement= gparsing_file_data(f,nbr_files,id_icrement,nbr_total_file)
            
-        
-   
-   
