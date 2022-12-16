@@ -7,7 +7,7 @@ import pathlib
 import numpy as np
 from config import *
 from db_chess import *
-
+import time
 #, 'game'
 list_keys=['Event', 'Site', 'Date', 'Round', 'White', 'Black', 'Result', 'WhiteElo', 'BlackElo', 'ECO','Game']
 file_error = []
@@ -21,7 +21,7 @@ def file_count(games_dir):
     return initial_count
 
 
-def parsing_file_data(f,nbr_files,id_icrement):
+def parsing_file_data(f,nbr_files,id_icrement,nbr_total_file):
     file = open(games_dir+f,encoding='utf-8', errors='ignore')
     line =''
     lines = ''
@@ -35,13 +35,19 @@ def parsing_file_data(f,nbr_files,id_icrement):
     key = []
     count = 0
     db_data =''
-   
+    count_lines = len(lines)
+    
+    #print(count_lines)
+    dot = ''
+    a=0
     for line in lines:
         key=[]
         keys=[]
         value=''
-        
-          
+        a+=1
+        percent = int(round((a/count_lines)*100,0))
+        print(f" {nbr_files}/{nbr_total_file} ->  FILE : {f}  |  {percent} %          ", end="\r")
+       
         # Parsing, cleaning
         if line.startswith('[') and line.rstrip('\n').endswith('"]'):
             line = line.replace('[','')
@@ -70,16 +76,19 @@ def parsing_file_data(f,nbr_files,id_icrement):
             
         if line.startswith('0') and line.endswith('\n'):
             key = 'Game'
+            line=line.replace('"',"`")  
             value = '"'+line+'"'
             db_data = db_data + value
             
         if line.startswith('{') and line.endswith('\n'):
             key = 'Game'
+            line=line.replace('"',"`")  
             value = '"'+line+'"'
             db_data = db_data + value   
         
         if line.startswith('*') and line.endswith('\n'):
             key = 'Game'
+            line=line.replace('"',"`")  
             value = '"'+line+'"'
             db_data = db_data + value 
         
@@ -96,6 +105,7 @@ def parsing_file_data(f,nbr_files,id_icrement):
                 #print(f"sql : {sql}")
                 #print("----------------")
                 db_data=''
+                       
                 # INSERT DATA IN DB
                 status=insert_data(sql)
                 if(status =='error'):
@@ -115,6 +125,7 @@ def parsing_file_data(f,nbr_files,id_icrement):
    
     #print("------END OF FILE  ----------")
     #print(f"file read = {f},nbr_files = {nbr_files}, id_icrement={id_icrement}")
+    a=0
     return f,nbr_files,id_icrement
     
 
@@ -128,10 +139,8 @@ def parsing():
     nbr_total_file=file_count(games_dir)
     for f in files:
         nbr_files+=1
-        if (nbr_files<200):
-            print(f" {nbr_files}/nbr_total_file ->  FILE : {f} ...")
-            
-            f,nbr_files,id_icrement= parsing_file_data(f,nbr_files,id_icrement)
+        if (nbr_files<nbr_total_file+1):
+            f,nbr_files,id_icrement= parsing_file_data(f,nbr_files,id_icrement,nbr_total_file)
            
         
    
