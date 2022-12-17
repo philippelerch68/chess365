@@ -28,4 +28,5 @@ if __name__=='__main__':
     print("----------------------------")
     print("IMPORTING folder players files to db")
     players_parsing()
-    print("Games import done")
+    print("Players import done")
+    print("--------END OF IMPORTATION --------")
