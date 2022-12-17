@@ -8,27 +8,38 @@ FOLDERS
 Data
  \Games
  \Players
-games.csv  (Data from all file in Games folder. Parsing, cleaning and ready to be integrate in DB)
+
+export 
+********
+ \compressed (datascientest_chess)
+    - Datascientest_chess.sql
+    - Datascientest_players.sql 
+
 
 
 1. readme.txt
 2. requierements.txt
 3. main.py             Start: importdata.py gamesparser.py.
 4. importdata.py       Download, unzip imported file.
-5. gamesparser.py      Parsing, cleaning, formating, saving datas in games.csv
-6. playerparser.py     read json players files in folder Players.
+5. gamesparser_to_db.py      Parsing, cleaning, formating, saving datas in games.csv
+6. playersparser_to_db.py     read json players files in folder Players.
+
+RUN
+===
+--> DOWNLOAD & EXTRACT & IMPORT TO DBs are done via main.py. (all automaticly action) 
 
 
 ANALYSE
 =======
 
-Some field have uncompleted value:
-        - [Date "2006.05.??"]  -> what we do ? 
-        "9th Asian Continental","Olongapo City PHI","2010.04.28","8","Salem, AR Saleh","Li Hanbin,,"1-0","2483","2330","D47" -> incomplet name. formating fixed.
+All datas are fully integrated in DBs (\export)
 
     GAMES FOLDERS
     *************
     - 200 files
+    - 282351 rows
+    - 2000 duplicate row.
+
     - Keys :['Event', 'Site', 'Date', 'Round', 'White', 'Black', 'Result', 'WhiteElo', 'BlackElo', 'ECO', 'game']
 
     Event : String (location) 
@@ -47,6 +58,8 @@ Some field have uncompleted value:
     PLAYERS
     *******
     - 200 files
+    - 200 rows
+    - 0 duplicate row
     - Keys : ['Rank', 'Name', 'ELO', 'Title', 'FIDEId', 'Federation', 'Games', 'BirthYear', 'Page']
     
     Rank : Integer

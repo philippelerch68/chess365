@@ -14,10 +14,10 @@ if __name__=='__main__':
     
     print("Starting                ", end='\r')
     print("Loading compressed file ", end='\r')
-    #download()
+    download()
     print("File downloaded         ", end='\r')
     print("Extracting data         ", end='\r')
-    #extract()
+    extract()
     print("End extraction          ", end='\r')
           
     print("----------------------------")
