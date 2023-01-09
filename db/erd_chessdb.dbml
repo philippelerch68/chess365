@@ -1,0 +1,74 @@
+////https://dbdiagram.io/
+
+// Creating tables
+Table player {
+  id int [pk, increment]
+  firstname varchar(100) [note: '--name[0]']
+  lastname varchar(100) [note: '--name[1]']
+  birthyear int
+  fideid inta
+}
+
+Table playerdetails {
+  id int [pk, increment]
+  player_id int [not null, unique, ref: - player.id]
+  title_id int [not null, ref: - dim_title.id]
+  federation_id int [not null, ref: - dim_federation.id]
+  rank int
+  elo int
+  games int
+  page varchar(200)
+}
+
+Table dim_title {
+  id int [pk, increment]
+  txt varchar(10)
+}
+
+Table dim_federation {
+  id int [pk, increment]
+  txt varchar(100)
+}
+
+Table event {
+  id int [pk, increment]
+  name varchar(100) [not null, note: '--event']
+  location_id int [not null, ref: - dim_location.id]
+}
+
+Table dim_location {
+  id int [pk, increment]
+  txt varchar(100) [note: '--site[0]']
+  txt1 varchar(10) [note: '--site[1]']
+}
+
+Table game {
+  id int [pk, increment] 
+  event_id int [not null, ref: > event.id]
+  white_player_id int [not null, ref: > player.id]
+  black_player_id int [not null, ref: > player.id]
+  result_id int [not null, ref: - dim_result.id]
+  eco_id int [not null, ref: - dim_eco.id]
+  gamedate date
+  stage varchar(10) [note: '--round']
+  whiteelo int
+  blackelo int
+}
+
+Table dim_result {
+  id int [pk, increment]
+  txt varchar(100)
+}
+
+Table dim_eco {
+  id int [pk, increment]
+  txt varchar(100)
+}
+
+Table moves {
+  id int [pk, increment]
+	game_id int [not null, ref: > game.id]
+	movenr int
+	white varchar(10)
+	black varchar(10)
+}
