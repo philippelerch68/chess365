@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 import mysql.connector
 
+# table create and info in import-info.txt
+
 def insert_data(sql):
     
   #establishing the connection
   conn = mysql.connector.connect(
     user='philippe', password='philippe', host='192.168.0.35', database='Datascientest')
-
+  
   #Creating a cursor object using the cursor() method
   cursor = conn.cursor()
 

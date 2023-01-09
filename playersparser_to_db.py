@@ -8,21 +8,6 @@ import pathlib
 from config import *
 from db_chess import *
 
-'''
-CREATE TABLE `Datascientest`.`players` (
-  `id` INT NOT NULL,
-  `rank` VARCHAR(45) NULL,
-  `name` VARCHAR(45) NULL,
-  `elo` VARCHAR(45) NULL,
-  `title` VARCHAR(45) NULL,
-  `fideid` VARCHAR(45) NULL,
-  `federation` VARCHAR(45) NULL,
-  `games` VARCHAR(45) NULL,
-  `birthyear` VARCHAR(45) NULL,
-  `page` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`));
-
-'''
 file_error = []
 key=[]
 list_keys = ['Rank', 'Name', 'ELO', 'Title', 'FIDEId', 'Federation', 'Games', 'BirthYear', 'Page']

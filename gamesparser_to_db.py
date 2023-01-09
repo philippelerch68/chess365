@@ -7,7 +7,7 @@ import numpy as np
 from config import *
 from db_chess import *
 import time
-#, 'game'
+
 list_keys = ['Event', 'Site', 'Date', 'Round', 'White', 'Black', 'Result', 'WhiteElo', 'BlackElo', 'ECO','Game']
 file_error = []
 

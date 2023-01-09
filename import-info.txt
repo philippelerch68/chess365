@@ -71,6 +71,39 @@ All datas are fully integrated in DBs (\export)
     Games : 
     BirthYear : String year
     Page : URL
+	
+	
+SQL DUMP Structure
+===================
+
+CREATE TABLE `chess` (
+  `id` int NOT NULL,
+  `Event` varchar(100) DEFAULT NULL,
+  `Site` varchar(100) DEFAULT NULL,
+  `Date` varchar(25) DEFAULT NULL,
+  `Round` varchar(100) DEFAULT NULL,
+  `White` varchar(100) DEFAULT NULL,
+  `Black` varchar(100) DEFAULT NULL,
+  `Result` varchar(45) DEFAULT NULL,
+  `WhiteElo` varchar(45) DEFAULT NULL,
+  `BlackElo` varchar(45) DEFAULT NULL,
+  `ECO` varchar(45) DEFAULT NULL,
+  `Game` mediumtext,
+  PRIMARY KEY (`id`)
+  
+ 
+ CREATE TABLE `players` (
+  `id` int NOT NULL,
+  `rank` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `elo` varchar(45) DEFAULT NULL,
+  `title` varchar(45) DEFAULT NULL,
+  `fideid` varchar(45) DEFAULT NULL,
+  `federation` varchar(45) DEFAULT NULL,
+  `games` varchar(45) DEFAULT NULL,
+  `birthyear` varchar(45) DEFAULT NULL,
+  `page` tinytext,
+  PRIMARY KEY (`id`)
 
 
 
