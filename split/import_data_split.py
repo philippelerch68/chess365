@@ -41,26 +41,63 @@ def import_players():
         result = insert_data(sql)
         print(sql,result)
     
-    
-        
-    
        
-       
-import_players()
+# import_players()
 
-'''
-for names in result:
-        c +=1
-        lf = names[0]
-        lfs = lf.split(' ')
-        firstname = lfs[0]
-        try :
-            lastname = lfs[1]
+
+def import_dim_title():
+    sql = "SELECT distinct (title)from players"
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        title = raw[0]
+        print(f"{c}, {title}")
+        sql = f"INSERT INTO dim_title (id,txt) VALUES ({c},'{title}')"
+        result = insert_data(sql)
+        print(sql,result)
         
-        except :
-            lastname ='--'
-        print(f" {firstname}  {lastname} {birthyear}")
-        sql = f"INSERT INTO player (id,firstname, lastname) VALUES ({c},'{firstname}','{lastname}')"
-        #result = insert_data(sql)
-        #print(sql,result)
-'''
+#import_dim_title()
+
+
+def import_federation():
+    sql = "SELECT distinct(federation)  FROM Datascientest.players order by federation asc;"
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        title = raw[0]
+        print(f"{c}, {title}")
+        sql = f"INSERT INTO dim_federation (id,txt) VALUES ({c},'{title}')"
+        result = insert_data(sql)
+        print(sql,result)
+        
+#import_federation()
+        
+        
+def import_playerdetails():        
+    sql= '''SELECT  player.id as player_id,dim_title.id as title_id,dim_federation.id as federation_id,players.rank as ranks ,elo,games, page FROM Datascientest.players
+    inner join dim_title on dim_title.txt = players.title
+    inner join dim_federation on dim_federation.txt = players.federation
+    inner join player on players.name = concat(player.firstname, ' ', player.lastname)'''
+
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        player_id = raw[0]
+        title_id = raw[1]
+        federation_id = raw[2]
+        rank = raw[3]
+        elo = raw[4]
+        games = raw[5]
+        page = raw[6]
+        
+        
+        
+        print(f"{c},{player_id},{title_id},{federation_id},{rank},{elo},{games},{page}")
+        sql = f"INSERT INTO playerdetails (id,player_id,title_id,federation_id,´rank´,elo,games,page) VALUES ({c},{player_id},{title_id},{federation_id},{rank},{elo},{games},'{page}')"
+        result = insert_data(sql)
+        print(sql, result)
+
+# import_playerdetails()

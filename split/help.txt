@@ -1,0 +1,4 @@
+SELECT  players.id,players.rank  ,elo,games, page, dim_title.txt,dim_title.id,dim_federation.txt, dim_federation.id, player.firstname, player.lastname, players.name FROM Datascientest.players
+inner join dim_title on dim_title.txt = players.title
+inner join dim_federation on dim_federation.txt = players.federation
+inner join player on players.name = concat(player.firstname, ' ', player.lastname)
