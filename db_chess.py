@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 import mysql.connector
+from config import *
 
 # table create and info in import-info.txt
 
 def insert_data(sql):
     
   #establishing the connection
-  conn = mysql.connector.connect(
-    user='philippe', password='philippe', host='192.168.0.35', database='Datascientest')
+  conn = mysql.connector.connect(user=db_user, password=db_password, host=db_host, database=db_database, consume_results=True)
   
   #Creating a cursor object using the cursor() method
   cursor = conn.cursor()
@@ -28,14 +28,39 @@ def insert_data(sql):
     # Rolling back in case of error
     conn.rollback()
     status ='error'
-   
+    
+  # Closing the connection
+  conn.close()
+  return status
     
 
+def select_data(sql):
+  #establishing the connection
+  conn = mysql.connector.connect(user=db_user, password=db_password, host=db_host, database=db_database, consume_results=True)
+  
+  #Creating a cursor object using the cursor() method
+  cursor = conn.cursor()
+
+  # Preparing SQL
+ 
+  try:
+    # Executing the SQL command
+    cursor.execute(sql)
+    myresult = cursor.fetchall()
+    return myresult
+
+  except:
+    # Rolling back in case of error
+    conn.rollback()
+    status ='error'
   
 
   # Closing the connection
   conn.close()
   return status
+
+
+ 
 
 
 '''

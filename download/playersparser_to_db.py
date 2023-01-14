@@ -2,11 +2,16 @@
 import re
 import array
 import os
+import sys
+sys.path.append('../')
+
 import json
 import numpy as np
 import pathlib
 from config import *
 from db_chess import *
+
+
 
 file_error = []
 key=[]
