@@ -101,3 +101,111 @@ def import_playerdetails():
         print(sql, result)
 
 # import_playerdetails()
+
+def import_dim_eco():
+    sql = "SELECT Distinct(ECO) FROM Datascientest.chess order by ECO ASC;"
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        txt = raw[0]
+        print(f"{c}, {txt}")
+        sql = f"INSERT INTO dim_eco (id,txt) VALUES ({c},'{txt}')"
+        result = insert_data(sql)
+        print(sql,result)
+        
+#import_dim_eco()
+
+
+def import_dim_result():
+    sql = "SELECT Distinct(Result) FROM Datascientest.chess order by Result ASC;"
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        txt = raw[0]
+        print(f"{c}, {txt}")
+        sql = f"INSERT INTO dim_result (id,txt) VALUES ({c},'{txt}')"
+        result = insert_data(sql)
+        print(sql,result)
+        
+#import_dim_result()
+
+def import_dim_location():
+    sql = "SELECT Distinct(Site) FROM Datascientest.chess order by Site ASC;"
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        txt = ''
+        txt1 = ''
+        txt0 =raw[0]
+        sites = raw[0].split(' ')
+        l = len(sites)
+        text1 = ''
+        for i in range(l):
+            pays = ""
+            if((len(sites[i]))==3) and i>0 and sites[i]!='les':
+                pays = " (pays) "
+                txt1 = sites[i]
+            else:
+                txt = txt + ' ' + str(sites[i])
+        
+        print(f" {txt} -> {txt1}")
+        sql = f"INSERT INTO dim_location (id,txt,txt1,txt0) VALUES ({c},'{txt}','{txt1}','{txt0}')"
+        result = insert_data(sql)
+        print(sql,result)
+        
+
+#import_dim_location()
+
+
+def import_event():
+    sql = "SELECT DISTINCT(Event), dim_location.id  FROM Datascientest.chess inner join dim_location on dim_location.txt0 = chess.Site order by Event"
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        event = raw[0]
+        location_id = raw[1]
+        
+        print(f"{c}, {event}, {location_id}")
+        sql = f"INSERT INTO event (id,name,location_id) VALUES ({c},'{event}',{location_id})"
+        result = insert_data(sql)
+        print(sql,result)
+        
+# import_event()
+
+
+def import_game():
+    sql='''
+    SELECT t3.id as event_id, t4.id as result_id, t5.id as eco_id, Date, Round, WhiteElo, BlackELO,t0.id,t1.id, t2.id  from chess as t0
+    inner join player as t1 on t1.lastname = SUBSTRING_INDEX(t0.White,',',1) AND t1.firstname = SUBSTRING_INDEX(t0.White,', ',-1)
+    inner join player as t2 on t2.lastname = SUBSTRING_INDEX(t0.Black,',',1) AND t2.firstname = SUBSTRING_INDEX(t0.Black,', ',-1) 
+    inner join event as t3 on t3.name = t0.Event
+    inner join dim_result as t4 on t4.txt = t0.Result
+    inner join dim_eco as t5 on t5.txt = t0.ECO
+    order by t0.id
+    '''
+
+    result= select_data(sql)
+    c = 0
+    for raw in result:
+        c+=1
+        event_id = raw[0]
+        result_id = raw[1]
+        eco_id = raw[2]
+        gamedate = raw[3]
+        gamedate =gamedate.replace(".","-")
+        stage = raw[4]
+        whiteelo = raw[5]
+        blackelo = raw[6]       
+        chess_id = raw[7]
+        white_player_id =raw[8]
+        black_player_id =raw[9]
+        print(f"{c}, {event_id},{result_id},{eco_id},{gamedate},{stage},{whiteelo},{blackelo},{chess_id},{white_player_id},{black_player_id}")
+        sql = f"INSERT INTO game (id,event_id,result_id,eco_id,gamedate,stage,whiteelo,blackelo,chess_id,white_player_id,black_player_id) VALUES ({c}, {event_id},{result_id},{eco_id},'{gamedate}','{stage}',{whiteelo},{blackelo},{chess_id},{white_player_id},{black_player_id})"
+        result = insert_data(sql)
+        print(sql,result)
+
+import_game()

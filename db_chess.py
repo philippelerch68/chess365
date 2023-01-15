@@ -39,15 +39,16 @@ def select_data(sql):
   conn = mysql.connector.connect(user=db_user, password=db_password, host=db_host, database=db_database, consume_results=True)
   
   #Creating a cursor object using the cursor() method
-  cursor = conn.cursor()
+  cursor = conn.cursor(buffered=True)
 
   # Preparing SQL
  
   try:
     # Executing the SQL command
     cursor.execute(sql)
-    myresult = cursor.fetchall()
-    return myresult
+    #myresult = cursor.fetchall()
+    #return myresult
+    return cursor
 
   except:
     # Rolling back in case of error
