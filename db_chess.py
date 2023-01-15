@@ -28,6 +28,10 @@ def insert_data(sql):
     # Rolling back in case of error
     conn.rollback()
     status ='error'
+    if(status =='error'):
+            flog = open('insert-error.txt', "a")
+            flog.write(f"{sql} --")
+            flog.write("\n")
     
   # Closing the connection
   conn.close()
