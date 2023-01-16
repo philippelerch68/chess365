@@ -186,7 +186,6 @@ def import_game():
     inner join dim_result as t4 on t4.txt = t0.Result
     inner join dim_eco as t5 on t5.txt = t0.ECO
     order by t0.id
-    limit 1000
     '''
 
     result= select_data(sql)
