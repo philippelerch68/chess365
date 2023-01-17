@@ -19,12 +19,12 @@ def create_database(host=host, database=database, user=user, password=password):
                                             password=password)
 
         cursor = connection.cursor()
-        cursor.execute(f"DROP DATABASE IF EXISTS {db_database}")
-        cursor.execute(f"CREATE DATABASE {db_database}")
-        print(f"Database {db_database} created successfully")
+        cursor.execute(f"DROP DATABASE IF EXISTS {database}")
+        cursor.execute(f"CREATE DATABASE {database}")
+        print(f"Database {database} created successfully")
 
     except Error as error:
-        print(f"Failed to create database {db_database}: {error}")
+        print(f"Failed to create database {database}: {error}")
     finally:
         if connection.is_connected():
             cursor.close()
