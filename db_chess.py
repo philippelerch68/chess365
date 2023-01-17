@@ -7,8 +7,9 @@ def insert_data(sql):
     
   #establishing the connection
   conn = mysql.connector.connect(
-    user='philippe', password='philippe', host='192.168.0.35', database='Datascientest')
-  
+    #user='philippe', password='philippe', host='192.168.0.35', database='Datascientest')
+    user='root', password='cuchri_dev', host='localhost', database='datascientest')
+    
   #Creating a cursor object using the cursor() method
   cursor = conn.cursor()
 
