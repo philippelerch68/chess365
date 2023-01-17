@@ -1,13 +1,8 @@
-
-
-import re
-import array
-import numpy as np 
 from config import *
 from importdata import *
 from gamesparser_to_db import *
 from playersparser_to_db import *
-import pathlib
+
 
 
 if __name__=='__main__':
