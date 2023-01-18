@@ -10,10 +10,10 @@ games_to_csv = data_dir +"games.csv"
 
 #  Database info
 #  user='philippe', password='philippe', host='192.168.0.35', database='Datascientest')
-db_host='192.168.0.35'
+db_host='localhost'
 db_database='Datascientest'
-db_user='philippe'
-db_password='philippe'
+db_user='host'
+db_password='cuchri_dev'
 
 '''
 def connection_test():

@@ -1,10 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
-from config import host, database, user, password
-from db_ddl import tables
 
 
-def create_tables(tables_dict = tables, host=host, database=database, user=user, password=password):
+def create_tables(tables_dict, host, database, user, password):
     """DDL step; creates defined tables in database
 
     Args:
@@ -24,10 +22,10 @@ def create_tables(tables_dict = tables, host=host, database=database, user=user,
         cursor = connection.cursor()
         print(f"Connection to database {database} established successfully")
         
-        for tab in tables.keys():
+        for tab in tables_dict.keys():
             try: 
                 result0 = cursor.execute(f"DROP TABLE IF EXISTS {tab}")
-                result = cursor.execute(f"CREATE TABLE {tab} {tables.get(tab)}")
+                result = cursor.execute(f"CREATE TABLE {tab} {tables_dict.get(tab)}")
                 print(f"Table {tab} created successfully ")
                 
             except mysql.connector.Error as error:

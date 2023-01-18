@@ -1,9 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
-from config import host, database, user, password
+#from config import db_host, db_database, db_user, db_password
 
-
-def create_database(host=host, database=database, user=user, password=password):
+def create_database(host, database, user, password):
     """DDL step; creates the database
 
     Args:
