@@ -1,6 +1,6 @@
 tables = {
     "players_raw": """(
-        id INT(5) NOT NULL PRIMARY KEY,
+        id INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
         ranking VARCHAR(10) NULL,
         name VARCHAR(100) NULL,
         elo VARCHAR(10) NULL,
@@ -14,7 +14,7 @@ tables = {
     """,
     
 	"games_raw": """(
-        id INT(5) NOT NULL PRIMARY KEY,
+        id INT(5) NOT NULL PRIMARY KEY AUTO_INCREMENT,
         event VARCHAR(40) NULL,
         site VARCHAR(30) NULL,
         date VARCHAR(12) NULL,

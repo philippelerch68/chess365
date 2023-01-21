@@ -1,9 +1,7 @@
-from config import *
 from db.create_db import create_database
 from db.create_tables import create_tables
-from download.importdata import download, extract
-from download.gamesparser_to_db import games_parsing
-from download.playersparser_to_db import players_parsing
+from extract_load.extract import download, extract
+from extract_load.parse_load import parse_directory
 from db.db_ddl import tables
 from helpers import read_yaml
 
@@ -14,6 +12,15 @@ db_host=config.get('DATABASE').get('db_host')
 db_database=config.get('DATABASE').get('db_database')
 db_user=config.get('DATABASE').get('db_user')
 db_password=config.get('DATABASE').get('db_password')
+db=[db_host, db_database, db_user, db_password]
+
+url=config.get('DATA').get('url')
+data_dir=config.get('DATA').get('data_dir')
+save_as=config.get('DATA').get('save_as')
+games_dir=config.get('DATA').get('games_dir')
+players_dir=config.get('DATA').get('players_dir')
+
+
 
 
 if __name__=='__main__':
@@ -31,20 +38,23 @@ if __name__=='__main__':
     print("--------END OF DDL --------")
     
     print("Loading compressed file ", end='\r')
-    #download()
+    download(url, save_as)
     print("File downloaded         ", end='\r')
     
     print("Extracting data         ", end='\r')
-    #extract()
+    extract(save_as, data_dir)
     print("Data extracted          ", end='\r')
     print("--------END OF EXTRACT --------")
     
     print("IMPORTING folder games files to db")
-    #games_parsing()
+    parse_directory(games_dir, db, 'games_raw')
     print("Games import done")
 
     print("----------------------------")
     print("IMPORTING folder players files to db")
-    #players_parsing()
+    parse_directory(players_dir, db, 'players_raw')
     print("Players import done")
     print("--------END OF LOAD --------")
+    
+    
+    

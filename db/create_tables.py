@@ -29,7 +29,7 @@ def create_tables(tables_dict, host, database, user, password):
                 print(f"Table {tab} created successfully ")
                 
             except mysql.connector.Error as error:
-                print("Failed to create table {tab}: {error}")
+                print(f"Failed to create table {tab}: {error}")
 
     except mysql.connector.Error as error:
         print(f"Failed to connect to database {database}: {error}")
