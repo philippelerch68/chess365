@@ -1,5 +1,7 @@
+import os
 from helpers import read_yaml, files_count, insert_data
 import json
+
 
 def parse_directory(dir_path, db, table):
     """Analyse files of a given directory; calls function read_load_file_data()
