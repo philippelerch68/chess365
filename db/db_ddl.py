@@ -9,7 +9,7 @@ tables = {
         federation VARCHAR(100) NULL,
         games VARCHAR(10) NULL,
         birthyear VARCHAR(10) NULL,
-        page VARCHAR(2000) NULL
+        page VARCHAR(5000) NULL
         )
     """,
     
