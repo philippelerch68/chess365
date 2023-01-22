@@ -13,7 +13,7 @@ def parse_directory(dir_path, db, table):
     """
     files = sorted(os.listdir(dir_path), reverse=False)
     len(files)
-    print(files)
+    #print(files)
 
     for file in files:
         print(f"Process File {files.index(file)+1}/{len(files)}: {file}", end="\r")
@@ -67,18 +67,18 @@ def read_load_file_data(dir_path, file, db, table):
             
             sql = f"""INSERT INTO {table} (
                 ranking,name,elo,title,fideid,federation,games,birthyear,page) 
-                VALUES ({data.get('Rank')},
-                        {data.get('Name').replace("'","`")},
-                        {data.get('ELO')},
-                        {data.get('Title')},
-                        {data.get('FIDEId')},
-                        {data.get('Federation')},
-                        {data.get('Games')},
-                        {data.get('BirthYear')},
-                        {data.get('Page').replace("'","`")}
+                VALUES ("{data.get('Rank')}",
+                        "{data.get('Name').replace("'","`")}",
+                        "{data.get('ELO')}",
+                        "{data.get('Title')}",
+                        "{data.get('FIDEId')}",
+                        "{data.get('Federation')}",
+                        "{data.get('Games')}",
+                        "{data.get('BirthYear')}",
+                        "{data.get('Page').replace("'","`")}"
                 )
                 """
-            #print(sql)
+            print(sql)
             insert_data(db, sql)
         
         except:
