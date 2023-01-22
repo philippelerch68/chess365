@@ -1,6 +1,7 @@
 import os
-from helpers import read_yaml, files_count, insert_data
 import json
+import chess.pgn as pgn
+from helpers import insert_data
 
 
 def parse_directory(dir_path, db, table):
@@ -35,23 +36,32 @@ def read_load_file_data(dir_path, file, db, table):
     if file.endswith('.pgn'):
         try:
             with open(dir_path+file,encoding='utf-8', errors='ignore') as f:
-                lines = f.readlines()
-        
-            for line in lines:
-                #process_lines_pct = int(round((lines.index(line)+1/len(lines))*100,0))
-                arr = content_cleaner(line)
-                #for each game,create a row to be inserted
-                db_data = []
-                if arr:
-                    db_data.append(arr[1])
-                #if the line contains 'game', then insert into table    
-                    if arr[0] == 'Move':
-                        sql = f"""INSERT INTO {table} (
-                            event, site, date, round, white, black, result, whiteelo, blackelo, eco, game) 
-                            VALUES ({db_data})
-                            """
-                        #print(sql)
-                        insert_data(db, sql)
+                games = []
+                while True:
+                    game = pgn.read_game(f)
+                    if game is not None:
+                        games.append(game)
+                    else:
+                        break
+                        
+            for game in games:
+                sql = f"""INSERT INTO {table} (
+                    event, site, date, round, white, black, result, whiteelo, blackelo, eco, game) 
+                    VALUES ("{game.headers["Event"]}",
+                            "{game.headers["Site"]}",
+                            "{game.headers["Date"]}",
+                            "{game.headers["Round"]}",
+                            "{game.headers["White"]}",
+                            "{game.headers["Black"]}",
+                            "{game.headers["Result"]}",
+                            "{game.headers["WhiteElo"]}",
+                            "{game.headers["BlackElo"]}",
+                            "{game.headers["ECO"]}",
+                            "{game.mainline_moves()}"
+                    )
+                    """          
+                #print(sql)
+                insert_data(db, sql)
         
         except:
             print(f"!------Problem with file: {file} ------!")
@@ -78,7 +88,7 @@ def read_load_file_data(dir_path, file, db, table):
                         "{data.get('Page').replace("'","`")}"
                 )
                 """
-            print(sql)
+            #print(sql)
             insert_data(db, sql)
         
         except:

@@ -38,11 +38,11 @@ if __name__=='__main__':
     print("--------END OF DDL --------")
     
     print("Loading compressed file ", end='\r')
-    download(url, save_as)
+    #download(url, save_as)
     print("File downloaded         ", end='\r')
     
     print("Extracting data         ", end='\r')
-    extract(save_as, data_dir)
+    #extract(save_as, data_dir)
     print("Data extracted          ", end='\r')
     print("--------END OF EXTRACT --------")
     
