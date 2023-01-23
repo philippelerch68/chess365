@@ -51,13 +51,13 @@ tables = {
     """,
     
     "dim_title": """(
-        id INTEGER NOT NULL PRIMARY KEY,
+        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         txt VARCHAR(10)
         )
     """,
     
     "dim_federation": """(
-        id INTEGER NOT NULL PRIMARY KEY,
+        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         txt VARCHAR(10)
         )
     """,
@@ -70,7 +70,7 @@ tables = {
     """,
     
     "dim_location": """(
-        id INTEGER NOT NULL PRIMARY KEY,
+        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         txt VARCHAR(10),
         txt1 VARCHAR(10)
         )
@@ -91,13 +91,13 @@ tables = {
     """,
     
     "dim_result": """(
-        id INTEGER NOT NULL PRIMARY KEY,
+        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         txt VARCHAR(100)
         )
     """,
     
     "dim_eco": """(
-        id INTEGER NOT NULL PRIMARY KEY,
+        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         txt VARCHAR(100)
         )
     """,
