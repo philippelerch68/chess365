@@ -6,24 +6,25 @@ from db.db_ddl import tables
 from helpers import read_yaml
 
 
-config = read_yaml("config.yaml")
-
-db_host=config.get('DATABASE').get('db_host')
-db_database=config.get('DATABASE').get('db_database')
-db_user=config.get('DATABASE').get('db_user')
-db_password=config.get('DATABASE').get('db_password')
-db=[db_host, db_database, db_user, db_password]
-
-url=config.get('DATA').get('url')
-data_dir=config.get('DATA').get('data_dir')
-save_as=config.get('DATA').get('save_as')
-games_dir=config.get('DATA').get('games_dir')
-players_dir=config.get('DATA').get('players_dir')
-
-
 
 
 if __name__=='__main__':
+    
+    config = read_yaml("config.yaml")
+
+    print("Read config        ", end='\r')    
+    db_host=config.get('DATABASE').get('db_host')
+    db_database=config.get('DATABASE').get('db_database')
+    db_user=config.get('DATABASE').get('db_user')
+    db_password=config.get('DATABASE').get('db_password')
+    db=[db_host, db_database, db_user, db_password]
+
+    url=config.get('DATA').get('url')
+    data_dir=config.get('DATA').get('data_dir')
+    save_as=config.get('DATA').get('save_as')
+    games_dir=config.get('DATA').get('games_dir')
+    players_dir=config.get('DATA').get('players_dir')
+    
     
     print("Starting process        ", end='\r')
     print("----------------------------")
@@ -38,11 +39,11 @@ if __name__=='__main__':
     print("--------END OF DDL --------")
     
     print("Loading compressed file ", end='\r')
-    #download(url, save_as)
+    download(url, save_as)
     print("File downloaded         ", end='\r')
     
     print("Extracting data         ", end='\r')
-    #extract(save_as, data_dir)
+    extract(save_as, data_dir)
     print("Data extracted          ", end='\r')
     print("--------END OF EXTRACT --------")
     
