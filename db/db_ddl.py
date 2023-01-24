@@ -31,6 +31,7 @@ tables = {
     
     "player": """(
         id INTEGER NOT NULL PRIMARY KEY,
+        name VARCHAR(100) NULL,
         firstname VARCHAR(100) NULL,
         lastname VARCHAR(100) NULL,
         birthyear INTEGER UNSIGNED NULL,
