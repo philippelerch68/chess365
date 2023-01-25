@@ -6,11 +6,11 @@ def create_tables(tables_dict, host, database, user, password):
     """DDL step; creates defined tables in database
 
     Args:
-        tables_dict (dict): definition of tables. Defaults to tables.
-        host (str): ip_address. Defaults to host defined in config.
-        database (str): name of the database. Defaults to database defined in config.
-        user (str): database user for connection. Defaults to user defined in config.
-        password (str): password of the user. Defaults to password defined in config.
+        tables_dict (dict): definition of tables
+        host (str): ip_address
+        database (str): name of the database
+        user (str): database user for connection
+        password (str): password of the user
     """
 
     try:

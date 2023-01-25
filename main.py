@@ -2,6 +2,7 @@ from db.create_db import create_database
 from db.create_tables import create_tables
 from extract_load.extract import download, extract
 from extract_load.parse_load import parse_directory
+from transform.parse_datamodel import parse_datamodel, erd
 from db.db_ddl import tables
 from helpers import read_yaml
 
@@ -51,11 +52,16 @@ if __name__=='__main__':
     parse_directory(games_dir, db, 'games_raw')
     print("Games import done")
 
-    print("----------------------------")
     print("IMPORTING folder players files to db")
     parse_directory(players_dir, db, 'players_raw')
     print("Players import done")
     print("--------END OF LOAD --------")
+    
+    print("TRANSFORM data into entity relationship model")
+    parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password)
+    print("Entity relationship transformation done")
+    print("--------END OF LOAD --------")
+    
     
     
     
