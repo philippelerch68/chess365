@@ -4,4 +4,3 @@ pip install pgn_parser
 pip install tqdm  # progress bar
 pip install mysql-connector-python
 pip install pyyaml
-pip install python-chess
