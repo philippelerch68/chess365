@@ -1,3 +1,4 @@
+from pathlib import Path
 from db.create_db import create_database
 from db.create_tables import create_tables
 from extract_load.extract import download, extract
@@ -13,7 +14,7 @@ if __name__=='__main__':
     
     config = read_yaml("config.yaml")
 
-    print("Read config        ", end='\r')    
+    print("------------------ Read config -------------------", end='\r')    
     db_host=config.get('DATABASE').get('db_host')
     db_database=config.get('DATABASE').get('db_database')
     db_user=config.get('DATABASE').get('db_user')
@@ -21,46 +22,38 @@ if __name__=='__main__':
     db=[db_host, db_database, db_user, db_password]
 
     url=config.get('DATA').get('url')
-    data_dir=config.get('DATA').get('data_dir')
-    save_as=config.get('DATA').get('save_as')
-    games_dir=config.get('DATA').get('games_dir')
-    players_dir=config.get('DATA').get('players_dir')
+    data_dir=Path(config.get('DATA').get('data_dir'))
+    save_as=Path(config.get('DATA').get('save_as'))
+    games_dir=Path(config.get('DATA').get('games_dir'))
+    players_dir=Path(config.get('DATA').get('players_dir'))
     
     
-    print("Starting process        ", end='\r')
-    print("----------------------------")
+    print("------------------ Starting process --------------", end='\r')
+    print("------------------------------------------------------------")
     
-    print("Creating database       ", end='\r')
+    print("Creating database ................................", end='\r')
     create_database(host=db_host, database=db_database, user=db_user, password=db_password)
-    print("Database created        ", end='\r')
-    
-    print("Creating tables         ", end='\r')
-    create_tables(tables_dict=tables, host=db_host, database=db_database, user=db_user, password=db_password)
-    print("Tables created          ", end='\r')
-    print("--------END OF DDL --------")
-    
-    print("Loading compressed file ", end='\r')
-    download(url, save_as)
-    print("File downloaded         ", end='\r')
-    
-    print("Extracting data         ", end='\r')
-    extract(save_as, data_dir)
-    print("Data extracted          ", end='\r')
-    print("--------END OF EXTRACT --------")
-    
-    print("IMPORTING folder games files to db")
-    parse_directory(games_dir, db, 'games_raw')
-    print("Games import done")
 
-    print("IMPORTING folder players files to db")
-    parse_directory(players_dir, db, 'players_raw')
-    print("Players import done")
-    print("--------END OF LOAD --------")
+    print("Creating tables ..................................", end='\r')
+    create_tables(tables_dict=tables, host=db_host, database=db_database, user=db_user, password=db_password)
+
+    print("Loading compressed file ..........................", end='\r')
+    download(url, save_as)
     
-    print("TRANSFORM data into entity relationship model")
+    print("Extracting data ..................................", end='\r')
+    extract(save_as, data_dir)
+    
+    print("IMPORTING folder games files to db ...............", end='\r')
+    parse_directory(games_dir, db, 'games_raw')
+
+    print("IMPORTING folder players files to db .............", end='\r')
+    parse_directory(players_dir, db, 'players_raw')
+    
+    print("TRANSFORM data into entity relationship model ....", end='\r')
     parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password)
-    print("Entity relationship transformation done")
-    print("--------END OF LOAD --------")
+
+    print("------------------------------------------------------------")
+    print("------------------- END OF LOAD ----------------------------")
     
     
     
