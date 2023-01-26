@@ -126,3 +126,18 @@ def test_create_tables(define_database_params, define_tables):
     assert (('player',) in db_tables) == True
     assert (('playerdetails',) in db_tables) == True
     assert (('players_raw',) in db_tables) == True
+    
+
+def test_rm_db(define_database_params):
+    """Remove database after running the tests
+
+    Args:
+        define_database_params: pytest.fixture function that returns a list with connection parameters
+    """
+    db = define_database_params
+
+    connection = mysql.connector.connect(host=db[0], database=db[1], user=db[2], password=db[3])
+    cursor = connection.cursor()
+    cursor.execute(f"DROP DATABASE IF EXISTS {db[1]}")
+    cursor.close()
+    connection.close()
