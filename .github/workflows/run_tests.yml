@@ -21,7 +21,8 @@ jobs:
       - name: start mysql
         run: |
           sudo /etc/init.d/mysql start
-          mysql status
+          sudo apt-get install -y mysql-client libmysqlclient-dev
+          mysql --host 127.0.0.1 -uroot -proot -e "mysql status"
       - name: Run tests on pytest
         run: |
           python3 -m pytest
