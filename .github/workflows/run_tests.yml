@@ -21,6 +21,7 @@ jobs:
       - name: start mysql
         run: |
           sudo /etc/init.d/mysql start
+          mysql status
       - name: Run tests on pytest
         run: |
           python3 -m pytest
