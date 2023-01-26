@@ -7,8 +7,7 @@ DATA:
   games_to_csv: "./data/games.csv"
 
 DATABASE:
-  #user='philippe', password='philippe', host='192.168.0.35', database='Datascientest')
   db_host: 'localhost'
   db_database: 'Datascientest'
   db_user: 'root'
-  db_password: 'cuchri_dev'
+  db_password: 'Root#1234'
