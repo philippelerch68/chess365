@@ -53,6 +53,7 @@ def test_mysql(define_database_params):
         connection.close()      
     except mysql.connector.Error as error:
         test_connection = False
+        print(error)
     finally:
         if connection.is_connected():
             connection.close()
@@ -77,6 +78,7 @@ def test_create_database(define_database_params):
         connection.close()      
     except mysql.connector.Error as error:
         test_connection = False
+        print(error)
     finally:
         if connection.is_connected():
             connection.close()
@@ -110,6 +112,7 @@ def test_create_tables(define_database_params, define_tables):
         connection.close()      
     except mysql.connector.Error as error:
         db_tables = []
+        print(error)
     finally:
         if connection.is_connected():
             connection.close()
