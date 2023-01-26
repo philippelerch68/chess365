@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           sudo apt-get install -y mysql-client libmysqlclient-dev
-          mysql alter user 'root'@'localhost' identified with mysql_native_password by 'Root#1234';
+          mysql alter user 'root'@'localhost' identified with mysql_native_password by 'Root#1234'
           mysql --host 127.0.0.1 -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
       - name: Run tests on pytest
         run: |
