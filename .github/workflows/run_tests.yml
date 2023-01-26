@@ -1,0 +1,27 @@
+name: Run tests
+on:
+  push
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+      env:
+        MYSQL_ROOT_PASSWORD: Root#1234
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
+      - name: Install packages
+        run: |
+          python3 -m pip install --upgrade -r requirements.txt
+      - name: start mysql
+        run: |
+          sudo /etc/init.d/mysql start
+      - name: Run tests on pytest
+        run: |
+          python3 -m pytest
