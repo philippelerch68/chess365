@@ -126,7 +126,7 @@ def test_create_tables(define_database_params, define_tables):
     assert (('player',) in db_tables) == True
     assert (('playerdetails',) in db_tables) == True
     assert (('players_raw',) in db_tables) == True
-    
+
 
 def test_rm_db(define_database_params):
     """Remove database after running the tests
