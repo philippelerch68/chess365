@@ -1,7 +1,7 @@
-pip install py7zr
-pip install chess
-pip install pgn_parser
-pip install tqdm  # progress bar
-pip install mysql-connector-python
-pip install pyyaml
-pip install pytest
+#pip install py7zr
+chess==1.9.4
+#pip install pgn_parser
+#pip install tqdm  # progress bar
+mysql-connector-python==8.0.32
+PyYAML==6.0
+pytest==7.2.1
