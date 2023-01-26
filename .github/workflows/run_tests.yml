@@ -1,12 +1,13 @@
 name: Run tests
 on:
   push
-  
+
+env:
+  MYSQL_ROOT_PASSWORD: Root#1234
+
 jobs:
   test:
     runs-on: ubuntu-latest
-      env:
-        MYSQL_ROOT_PASSWORD: Root#1234
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
