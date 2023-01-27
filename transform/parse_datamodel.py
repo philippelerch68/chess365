@@ -19,14 +19,16 @@ def parse_datamodel(erd_dict, host, database, user, password):
                                             user=user,
                                             password=password)
 
-        cursor = connection.cursor()
+        
         print(f"Connection to database {database} established successfully")
         
         for tab in erd_dict.keys():
             try: 
-                result0 = cursor.execute(f"TRUNCATE TABLE {tab}")
-                result = cursor.execute(f"INSERT INTO {tab} {erd_dict.get(tab)}")
-                print(f"Data inserted successfully into table {tab} ")
+                cursor = connection.cursor()
+                cursor.execute(f"TRUNCATE TABLE {tab}")
+                cursor.execute(f"INSERT INTO {tab} {erd_dict.get(tab)}")
+                connection.commit()
+                print(f"Data inserted successfully into table {tab}, {cursor.rowcount} rows inserted")
                 
             except mysql.connector.Error as error:
                 print(f"Failed to insert data into table {tab}: {error}")
@@ -153,7 +155,7 @@ erd = {
             ON gr.result=dr.txt
         LEFT JOIN dim_eco de
             ON gr.eco=de.txt
-    """#,
+    """,
     #moves is not needed since    
     #"moves": """(
     #    (game_id, movenr, white, black)
