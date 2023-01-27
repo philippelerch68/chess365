@@ -58,7 +58,7 @@ tables = {
     
     "dim_federation": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        txt VARCHAR(10)
+        txt VARCHAR(100)
         )
     """,
     
