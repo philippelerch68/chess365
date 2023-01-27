@@ -35,7 +35,7 @@ def read_load_file_data(dir_path, file, db, table):
     #process games
     if file.endswith('.pgn'):
         try:
-            with open(dir_path+file,encoding='utf-8', errors='ignore') as f:
+            with open(dir_path.joinpath(file),encoding='utf-8', errors='ignore') as f:
                 games = []
                 while True:
                     game = pgn.read_game(f)
@@ -72,7 +72,7 @@ def read_load_file_data(dir_path, file, db, table):
     #process players
     elif file.endswith('.json'):
         try:
-            with open(dir_path+file,encoding='utf-8', errors='ignore') as f:
+            with open(dir_path.joinpath(file),encoding='utf-8', errors='ignore') as f:
                 data = json.load(f)
             
             sql = f"""INSERT INTO {table} (
