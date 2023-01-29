@@ -30,8 +30,6 @@ if __name__=='__main__':
     error_log = Path(config.get('DATA').get('db_error_log')) 
     
     
-    
-    '''
     print("------------------ Starting process --------------", end='\r')
     print("------------------------------------------------------------")
     
@@ -52,7 +50,7 @@ if __name__=='__main__':
     
     print("IMPORTING folder players files to db .............                      ", end='\r')
     parse_directory(players_dir, db, 'players_raw',db_log,error_log)
-    '''
+    
     print("TRANSFORM data into entity relationship model ....", end='\r')
     parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password)
 
