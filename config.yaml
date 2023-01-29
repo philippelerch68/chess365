@@ -7,6 +7,12 @@ DATA:
   games_to_csv: "./data/games.csv"
 
 DATABASE:
+  db_host: '192.168.0.35'
+  db_database: 'chess'
+  db_user: 'philippe'
+  db_password: 'philippe'
+
+DATABASE_christophe:
   db_host: '127.0.0.1'
   db_database: 'Datascientest'
   db_user: 'root'
