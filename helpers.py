@@ -32,7 +32,7 @@ def files_count(dir_path):
     return cnt
 
 
-def insert_data(db, sql):
+def insert_data(db, sql,db_log,error_log):
     """Load data as a row in a table of a defined database
 
     Args:

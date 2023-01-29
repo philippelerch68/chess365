@@ -1,9 +1,9 @@
 from urllib.request import urlopen
 import py7zr
-
+import os
 # Download and extract data
 
-def download(url, save_as):
+def download(url, data_dir,save_as):
     """Downloads a zip folder containing the project's data from defined url: 
     "https://analyticsengineeringprojects.s3.eu-west-1.amazonaws.com/AE_ChessAnalytics.7z"
 
@@ -11,6 +11,9 @@ def download(url, save_as):
         url (str): URL where the data for the project is received
         save_as (str): Location and name where the zipped folder is stored
     """
+    mode = 0o755
+    os.mkdir(f"./{data_dir}", mode)
+    
     print(f"Downloading {url}...                                                        ", end='\r')
     with urlopen(url) as file:
         content = file.read()

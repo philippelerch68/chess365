@@ -4,7 +4,7 @@ import chess.pgn as pgn
 from helpers import insert_data
 
 
-def parse_directory(dir_path, db, table):
+def parse_directory(dir_path, db, table,db_log,error_log):
     """Analyse files of a given directory; calls function read_load_file_data()
 
     Args:
@@ -18,10 +18,10 @@ def parse_directory(dir_path, db, table):
 
     for file in files:
         print(f"Process File {files.index(file)+1}/{len(files)}: {file}", end="\r")
-        read_load_file_data(dir_path, file, db, table)
+        read_load_file_data(dir_path, file, db, table,db_log,error_log)
         
 
-def read_load_file_data(dir_path, file, db, table):
+def read_load_file_data(dir_path, file, db, table,db_log,error_log):
     """Opens all files of a given directory, and inserts the content of the file in a given database table. 
     Players and Games are processed according to their file extension. In case of Games, a function content_cleaner()
     is called.
@@ -33,12 +33,21 @@ def read_load_file_data(dir_path, file, db, table):
         table (str): Database table, where data should be inserted
     """
     #process games
+    result=''
     if file.endswith('.pgn'):
         try:
             with open(dir_path.joinpath(file),encoding='utf-8', errors='ignore') as f:
                 games = []
                 while True:
-                    game = pgn.read_game(f)
+                    try:
+                        game = pgn.read_game(f)
+                    except:
+                        game = ''
+                        print(f"!------Problem with file: {file} ------!")
+                        flog = open(f"error pgn.read_game : {error_log}", "a")
+                        flog.write(f"{file} -- error chess.png reading !")
+                        flog.write("\n")
+                        
                     if game is not None:
                         games.append(game)
                     else:
@@ -61,12 +70,19 @@ def read_load_file_data(dir_path, file, db, table):
                     )
                     """          
                 #print(sql)
-                insert_data(db, sql)
+                result = insert_data(db, sql,db_log,error_log)
+                '''
+                #print(f"!------log from  file: {file} ------!")
+                flog = open (f"{db_log}", "a")
+                flog.write(f"{result}{sql} --")
+                flog.write("\n")
+                '''
         
         except:
             print(f"!------Problem with file: {file} ------!")
-            flog = open('file-error.txt', "a")
-            flog.write(f"{file} --")
+            flog = open(f"{error_log}", "a")
+            flog.write(f"error : {file} --")
+            flog.write(f"{result} --")
             flog.write("\n")
     
     #process players
@@ -89,12 +105,17 @@ def read_load_file_data(dir_path, file, db, table):
                 )
                 """
             #print(sql)
-            insert_data(db, sql)
+            result = insert_data(db, sql,db_log,error_log)
+            #print(f"!------log from  file: {file} ------!")
+            flog = open(f"{db_log}", "a")
+            flog.write(f"{result}{sql} --")
+            flog.write("\n")
         
         except:
             print(f"!------Problem with file: {file} ------!")
-            flog = open('file-error.txt', "a")
+            flog = open(f"{error_log}", "a")
             flog.write(f"{file} --")
+            flog.write(f"{result} --")
             flog.write("\n")
             
 

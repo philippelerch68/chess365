@@ -26,8 +26,12 @@ if __name__=='__main__':
     save_as=Path(config.get('DATA').get('save_as'))
     games_dir=Path(config.get('DATA').get('games_dir'))
     players_dir=Path(config.get('DATA').get('players_dir'))
+    db_log = Path(config.get('DATA').get('db_log')) 
+    error_log = Path(config.get('DATA').get('db_error_log')) 
     
     
+    
+    '''
     print("------------------ Starting process --------------", end='\r')
     print("------------------------------------------------------------")
     
@@ -36,19 +40,19 @@ if __name__=='__main__':
 
     print("Creating tables ..................................", end='\r')
     create_tables(tables_dict=tables, host=db_host, database=db_database, user=db_user, password=db_password)
-
-    print("Loading compressed file ..........................", end='\r')
-    download(url, save_as)
     
+    print("Loading compressed file ..........................", end='\r')
+    download(url,data_dir, save_as)
+     
     print("Extracting data ..................................", end='\r')
     extract(save_as, data_dir)
-    
+   
     print("IMPORTING folder games files to db ...............", end='\r')
-    parse_directory(games_dir, db, 'games_raw')
-
-    print("IMPORTING folder players files to db .............", end='\r')
-    parse_directory(players_dir, db, 'players_raw')
+    parse_directory(games_dir, db, 'games_raw',db_log,error_log)
     
+    print("IMPORTING folder players files to db .............                      ", end='\r')
+    parse_directory(players_dir, db, 'players_raw',db_log,error_log)
+    '''
     print("TRANSFORM data into entity relationship model ....", end='\r')
     parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password)
 
