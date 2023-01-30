@@ -136,12 +136,12 @@ erd = {
             , de.id AS eco_id
             , CASE 
                 WHEN SUBSTRING(gr.date, 6,2) = '02' AND SUBSTRING(gr.date, 9,2) > '28' 
-				    THEN STR_TO_DATE(CONCAT(SUBSTRING(gr.date, 1,8), '28'),'%Y.%m.%d')
-		
+				    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,8), '28'),'%Y.%m.%d')
+                WHEN SUBSTRING(gr.date, 6,2) IN ('04', '06', '09', '11') AND SUBSTRING(gr.date, 9,2) >= '31' 
+				    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,8), '30'),'%Y.%m.%d')
                 WHEN SUBSTRING(gr.date, 6,2) > '12'
-                    THEN STR_TO_DATE(CONCAT(SUBSTRING(gr.date, 1,5), '12.31'),'%Y.%m.%d')
-                    
-                ELSE STR_TO_DATE(REPLACE(gr.date, "??", "01"),'%Y.%m.%d')
+                    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,5), '12.31'),'%Y.%m.%d')
+                ELSE STR_TO_DATE(REPLACE(REPLACE(gr.date, '-', '.'), "??", "01"),'%Y.%m.%d')
                 END AS gamedate
             , gr.round AS stage
             , gr.whiteelo
