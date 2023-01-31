@@ -1,18 +1,18 @@
 DATA:
-  url: "https://analyticsengineeringprojects.s3.eu-west-1.amazonaws.com/AE_ChessAnalytics.7z"
-  save_as: "./data/AE_ChessAnalytics.7z"
-  data_dir: "./data/"
-  games_dir: "./data/Games/"
-  players_dir: "./data/Players/"
-  games_to_csv: "./data/games.csv"
+  url: https://analyticsengineeringprojects.s3.eu-west-1.amazonaws.com/AE_ChessAnalytics.7z
+  save_as: AE_ChessAnalytics.7z
+  data_dir : data
+  games_dir: data/Games
+  players_dir: data/Players
   db_log : db.log
   db_error_log : file-error.log
 
 
+
 DATABASE:
-  db_host: '127.0.0.1'
-  db_database: 'Datascientest'
-  db_user: 'root'
-  db_password: 'Root#1234'
+  db_host: '192.168.0.35'
+  db_database: 'chess3'
+  db_user: 'philippe'
+  db_password: 'philippe'
 
 
