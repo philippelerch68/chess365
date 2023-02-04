@@ -1,6 +1,5 @@
 import streamlit as st
 import mysql.connector
-
 import io
 import chess.pgn
 
@@ -21,10 +20,13 @@ def run_query(query):
         return cur.fetchall()
     
 def select_game():
-       
-    s =[]
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     sql ='''
-       SELECT game.id, event_id, event.name, dim_location.txt as location,dim_location.txt1 as country, gamedate, plw.lastname as wlastname,plw.firstname as wfirstname ,plb.lastname as plastname,plb.firstname as pfirstname, stage,whiteelo,blackelo, dim_result.txt as result, moves FROM game
+    SELECT game.id, event_id, event.name, dim_location.txt as location,dim_location.txt1 as country, gamedate, plw.lastname as wlastname,plw.firstname as wfirstname ,plb.lastname as plastname,plb.firstname as pfirstname, stage,whiteelo,blackelo, dim_result.txt as result, moves FROM game
         inner join player as plw on plw.id = white_player_id
         inner join player as plb on plb.id = black_player_id
         inner join event on event.id = game.event_id
@@ -38,8 +40,13 @@ def select_game():
     
     return list_value
     
-       
+    
 def display_chess_game(id):
+    """_summary_
+
+    Args:
+        id (id): id passed to DB for game.id
+    """
     
     input_id = id
     game_id = id
@@ -64,11 +71,12 @@ def display_chess_game(id):
             display_move(id=id)
         
         for move in game.mainline():
-           comment = move.comment
-           if(comment != ''):
-               with col1:
-                st.subheader("Comment from game ")
-                st.write(f" {comment}")
+            
+            comment = move.comment
+            if(comment != ''):
+                with col1:
+                    st.subheader("Comment from game ")
+                    st.write(f" {comment}")
         a=0
         for move in game.mainline_moves():
             board.push(move) 
@@ -86,7 +94,11 @@ def display_chess_game(id):
         
 
 def display_move(id):
-    
+    """_summary_
+
+    Args:
+        id (int): id passed to DB
+    """
     
     sql =f'''
     SELECT game.id,event_id, event.name, dim_location.txt as location,dim_location.txt1 as country, gamedate, plw.lastname as wlastname,plw.firstname as wfirstname ,plb.lastname as plastname,plb.firstname as pfirstname, stage,whiteelo,blackelo, dim_result.txt as result, moves FROM game
@@ -106,25 +118,20 @@ def display_move(id):
         st.write(f" Black : **{raw[8]}**  {raw[9]}  ")
         st.subheader(f"Result ")
         st.write(f" {raw[13]}")
-        #st.write(f" Ref:{raw[0]}")
-    
-    input_id = id
-    game_id = id
-       
+
 
 list_value = select_game()
 
 st.sidebar.subheader(f" Global ")   
 input_id = st.sidebar.text_input("game id (6483)")
 if input_id:
-    st.write(f" {input_id}")
+    #st.write(f" {input_id}")
     display_chess_game(id=input_id)  #6483
 
 
 st.sidebar.subheader("Game in Paris ")  
 game_id = st.sidebar.selectbox(label='Select players',options=list_value,format_func=lambda x: x[1])
 if game_id:
-    #st.write(f" {game_id[0]}")
     input_id = game_id[0]
     display_chess_game(id=game_id[0])  #6483
 
