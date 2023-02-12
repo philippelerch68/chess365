@@ -16,10 +16,10 @@ IMPORTATION STATUS
 | Total raw imported to game_raw             | 279209 |  99.85 |
 | Total raw imported in game                 | 226134 |  80.99 |
 |                                            |        |        |
-| **Total lost**                                 |  **53489** |  **19.15** |
+| Total lost                                 |  53489 | 19.15  |
 |                                            |        |        |
 | Cause of lost data :                       |        |        |
-|     - PNG parser                           |    414 |   0.14 |
+|     - PGN parser                           |    414 |   0.14 |
 |     - Date format (??)                     |  24234 |   8.66 |
 |     - Incompatible import                  |  29225 |  10.04 |
 |     - SQL import error :                   |     11 |  0.003 |
@@ -29,3 +29,4 @@ IMPORTATION STATUS
 * Only 1.01 is comming from player files (json)
 
 
+2000.01.01

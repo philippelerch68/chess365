@@ -82,7 +82,7 @@ labels = 'PNG parser', 'Date', 'SQL'
 values = [30, 34, 11]
 
 
-fig = plt.figure(2, figsize=(0.5        ,0.5))
+fig = plt.figure(2, figsize=(0.5,0.5))
 ax = fig.add_subplot(111)
 ax.axis('equal')
 plt.suptitle(title_string,fontsize = 4)

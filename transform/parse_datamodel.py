@@ -3,7 +3,7 @@ from mysql.connector import Error
 from helpers import select_data, insert_data
 
 
-def parse_datamodel(erd_dict, host, database, user, password):
+def parse_datamodel(erd_dict, host, database, user, password,db_log,error_log):
     """DDL step; creates defined tables in database
 
     Args:
@@ -33,9 +33,15 @@ def parse_datamodel(erd_dict, host, database, user, password):
                 
             except mysql.connector.Error as error:
                 print(f"Failed to insert data into table {tab}: {error}")
+                flog = open(f"{error_log}", "a")
+                flog.write(f"error : {error} --")
+                flog.write("\n")
 
     except mysql.connector.Error as error:
         print(f"Failed to connect to database {database}: {error}")
+        flog = open(f"{error_log}", "a")
+        flog.write(f"error : {error} --")
+        flog.write("\n")
     finally:
         if connection.is_connected():
             cursor.close()
@@ -164,80 +170,4 @@ erd = {
         
     """
 }
-
-def import_dim_location(db,db_log,error_log):
-    '''
-    import_dim_location
-    '''
-    sql = "SELECT Distinct(Site) FROM games_raw order by Site ASC;"
-    result= select_data(db,sql)
-    for raw in result:
-        c = ''
-        txt = ''
-        txt0 = ''
-        txt1 = ''
         
-        txt = raw[0].replace("'", "`")
-        txt0 = txt
-        
-        sites = txt0.split(' ')
-        
-        l = len(sites)-1
-        c = sites[l]
-        if c.isupper():
-            txt = txt0.replace(c, '')
-            txt = txt.rstrip()
-            txt1 = c
-            
-        sql_i = f"INSERT INTO dim_location (txt,txt1,txt0) VALUES ('{txt}','{txt1}','{txt0}')"
-        result = insert_data(db, sql_i,db_log,error_log)
-        #print(sql_i,result)
-        print(f"{c}, {txt} -> {txt1} | {result}                                                              ", end="\r")
-        
-
-def import_game_data(host, database, user, password):
-    
-    sql = {
-        "game": """
-        (event_id, site_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
-        SELECT DISTINCT 
-            e.id AS event_id
-            , s.id AS site_id
-            , p1.id AS white_player_id
-            , p2.id AS black_player_id
-            , dr.id AS result_id
-            , de.id AS eco_id
-            , CASE 
-                WHEN SUBSTRING(gr.date, 6,2) = '02' AND SUBSTRING(gr.date, 9,2) > '28' 
-                    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,8), '28'),'%Y.%m.%d')
-                WHEN SUBSTRING(gr.date, 6,2) IN ('04', '06', '09', '11') AND SUBSTRING(gr.date, 9,2) >= '31' 
-                    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,8), '30'),'%Y.%m.%d')
-                WHEN SUBSTRING(gr.date, 6,2) > '12'
-                    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,5), '12.31'),'%Y.%m.%d')
-                ELSE STR_TO_DATE(REPLACE(REPLACE(gr.date, '-', '.'), "??", "01"),'%Y.%m.%d')
-                END AS gamedate
-            , gr.round AS stage
-            , gr.whiteelo
-            , gr.blackelo
-            , gr.game AS moves
-        FROM games_raw gr
-        inner JOIN dim_event e
-            ON gr.event=e.name
-        inner JOIN dim_site s
-            ON gr.site=s.name
-        inner JOIN player p1
-            ON gr.white =p1.complet_name
-        inner JOIN player p2
-            ON gr.black =p2.complet_name
-        inner JOIN dim_result dr
-            ON gr.result=dr.txt
-        inner JOIN dim_eco de
-            ON gr.eco=de.txt
-        
-    """
-    }
-    
-    parse_datamodel(sql, host, database, user, password)
-    
-    
-    
