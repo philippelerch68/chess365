@@ -125,10 +125,44 @@ erd = {
         select distinct(gr.site) as name
         FROM games_raw gr
         order by name
+    """,
+     "game": """
+        (event_id, site_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
+        SELECT DISTINCT 
+            e.id AS event_id
+            , s.id AS site_id
+            , p1.id AS white_player_id
+            , p2.id AS black_player_id
+            , dr.id AS result_id
+            , de.id AS eco_id
+            , CASE 
+                WHEN SUBSTRING(gr.date, 6,2) = '02' AND SUBSTRING(gr.date, 9,2) > '28' 
+                    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,8), '28'),'%Y.%m.%d')
+                WHEN SUBSTRING(gr.date, 6,2) IN ('04', '06', '09', '11') AND SUBSTRING(gr.date, 9,2) >= '31' 
+                    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,8), '30'),'%Y.%m.%d')
+                WHEN SUBSTRING(gr.date, 6,2) > '12'
+                    THEN STR_TO_DATE(CONCAT(SUBSTRING(REPLACE(gr.date, '-', '.'), 1,5), '12.31'),'%Y.%m.%d')
+                ELSE STR_TO_DATE(REPLACE(REPLACE(gr.date, '-', '.'), "??", "01"),'%Y.%m.%d')
+                END AS gamedate
+            , gr.round AS stage
+            , gr.whiteelo
+            , gr.blackelo
+            , gr.game AS moves
+        FROM games_raw gr
+        inner JOIN dim_event e
+            ON gr.event=e.name
+        inner JOIN dim_site s
+            ON gr.site=s.name
+        inner JOIN player p1
+            ON gr.white =p1.complet_name
+        inner JOIN player p2
+            ON gr.black =p2.complet_name
+        inner JOIN dim_result dr
+            ON gr.result=dr.txt
+        inner JOIN dim_eco de
+            ON gr.eco=de.txt
+        
     """
-    
-  
-
 }
 
 def import_dim_location(db,db_log,error_log):
