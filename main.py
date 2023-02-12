@@ -48,19 +48,19 @@ if __name__=='__main__':
     # -------- END OF DOWNLOAD AND EXTRACTING ----------------------------
 
     print("IMPORTING folder games files to db ...............", end='\r')
-    parse_directory(games_dir, db, 'games_raw',db_log,error_log)
+    # parse_directory(games_dir, db, 'games_raw',db_log,error_log)
     
     
     
     
     print("IMPORTING folder players files to db .............                      ", end='\r')
-    parse_directory(players_dir, db, 'players_raw',db_log,error_log)
+    # parse_directory(players_dir, db, 'players_raw',db_log,error_log)
     
     # ------------- END  PART OF  CHESS_RAW  AND PLAYERS_ RAW  -------------------------
     
     
     print("TRANSFORM import_dim_location ....", end='\r')
-    import_dim_location(db,db_log,error_log)
+    # import_dim_location(db,db_log,error_log)
 
     print("TRANSFORM data into entity relationship model ....", end='\r')
     parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password)
@@ -76,7 +76,7 @@ if __name__=='__main__':
                     OVER (PARTITION BY name ORDER BY name ) AS number
                 from event
             ) t
-            WHERE number > 1
+            WHERE number > 1    
             )
         '''
         

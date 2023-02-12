@@ -34,7 +34,9 @@ tables = {
         firstname VARCHAR(100) NULL,
         lastname VARCHAR(100) NULL,
         birthyear INTEGER UNSIGNED NULL,
-        fideid INTEGER UNSIGNED NULL
+        fideid INTEGER UNSIGNED NULL,
+        complet_name VARCHAR(100) NULL,
+        
         )
     """,
     
