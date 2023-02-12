@@ -112,17 +112,18 @@ erd = {
         SELECT DISTINCT (eco) AS txt
         FROM games_raw
     """,
-    "dim_city": """
-        (city) 
-        SELECT distinct(TXT) as city FROM  dim_location
-        order by city
-    """,
-    "event": """
-        (name, location_id)
-        select distinct(gr.event) as name, dl.id as location_id
+ 
+    "dim_event": """
+        (name)
+        select distinct(gr.event) as name
         FROM games_raw gr
-        inner join dim_location on gr.site = dim_location.txt0 
-        inner join dim_city dl on dl.city = dim_location.txt
+        order by name
+    """,
+    
+     "dim_site": """
+        (name)
+        select distinct(gr.site) as name
+        FROM games_raw gr
         order by name
     """
     
@@ -164,9 +165,10 @@ def import_game_data(host, database, user, password):
     
     sql = {
         "game": """
-        (event_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
+        (event_id, site_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
         SELECT DISTINCT 
             e.id AS event_id
+            , s.id AS site_id
             , p1.id AS white_player_id
             , p2.id AS black_player_id
             , dr.id AS result_id
@@ -185,8 +187,10 @@ def import_game_data(host, database, user, password):
             , gr.blackelo
             , gr.game AS moves
         FROM games_raw gr
-        inner JOIN event e
+        inner JOIN dim_event e
             ON gr.event=e.name
+        inner JOIN dim_site s
+            ON gr.site=s.name
         inner JOIN player p1
             ON gr.white =p1.complet_name
         inner JOIN player p2

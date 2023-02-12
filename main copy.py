@@ -59,11 +59,29 @@ if __name__=='__main__':
     # ------------- END  PART OF  CHESS_RAW  AND PLAYERS_ RAW  -------------------------
     
     
-    
+    print("TRANSFORM import_dim_location ....", end='\r')
+    # import_dim_location(db,db_log,error_log)
+
     print("TRANSFORM data into entity relationship model ....", end='\r')
-    #parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password)
+    parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password)
     
+    print("Cleaning event table ..........................", end='\r')
+    sql = '''
+        DELETE FROM event
+            WHERE 
+            id IN (
+            SELECT id
+            FROM (
+                select id,ROW_NUMBER() 
+                    OVER (PARTITION BY name ORDER BY name ) AS number
+                from event
+            ) t
+            WHERE number > 1    
+            )
+        '''
         
+    delete_data(db, sql,db_log,error_log)
+    
     print("IMPORT GAME  ..........................", end='\r')
     import_game_data(host=db_host, database=db_database, user=db_user, password=db_password)
     

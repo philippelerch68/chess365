@@ -64,25 +64,17 @@ tables = {
         )
     """,
     
-    "dim_location": """(
+       
+    
+    "dim_event": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        txt VARCHAR(100),
-        txt0 VARCHAR(100),
-        txt1 VARCHAR(10)
+        name VARCHAR(100)
         )
     """,
     
-    "dim_city": """(
+     "dim_site": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        city VARCHAR(100)
-        )
-    """,
-    
-    
-    "event": """(
-        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(100),
-        location_id INTEGER UNSIGNED NOT NULL
+        name VARCHAR(100)
         )
     """,
     
@@ -90,6 +82,7 @@ tables = {
     "game": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         event_id INTEGER UNSIGNED NOT NULL,
+        site_id INTEGER UNSIGNED NOT NULL,
         white_player_id INTEGER UNSIGNED NOT NULL,
         black_player_id INTEGER UNSIGNED NOT NULL,
         result_id INTEGER UNSIGNED NOT NULL,
@@ -114,14 +107,6 @@ tables = {
         )
     """,
     
-    "moves": """(
-        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        game_id INTEGER NOT NULL,
-        movenr INTEGER UNSIGNED,
-        white VARCHAR(10),
-        black VARCHAR(10)
-        )
-    """,
     "moves_calc": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         game_id INTEGER NOT NULL,
