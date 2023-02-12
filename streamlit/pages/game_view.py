@@ -32,7 +32,7 @@ def select_game():
         inner join event on event.id = game.event_id
         inner join dim_result on dim_result.id = game.result_id
         inner join dim_location on dim_location.id = event.location_id
-        where moves like "%{%" and  dim_location.txt like "%Paris%"
+        where moves like "%{%" and  dim_location.txt1 = "FRA"
         order by game.id
         '''
     result= run_query(sql)
@@ -50,7 +50,7 @@ def display_chess_game(id):
     
     input_id = id
     game_id = id
-    sql =f"SELECT game.id, game FROM Datascientest.game where id = {id} "
+    sql =f"SELECT game.id, moves FROM game where id = {id} "
     result= run_query(sql)
     line=''
     comment = False
@@ -69,13 +69,13 @@ def display_chess_game(id):
         
         with col1:
             display_move(id=id)
-        
+            st.subheader("Comment from game ")
         for move in game.mainline():
             
             comment = move.comment
             if(comment != ''):
                 with col1:
-                    st.subheader("Comment from game ")
+                    
                     st.write(f" {comment}")
         a=0
         for move in game.mainline_moves():

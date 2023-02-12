@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
+from helpers import select_data, insert_data
 
 
 def parse_datamodel(erd_dict, host, database, user, password):
@@ -47,8 +48,8 @@ def parse_datamodel(erd_dict, host, database, user, password):
 erd = {
     #player_data
     "player": """
-        (firstname, lastname, birthyear, fideid)
-        SELECT gr1.firstname, gr1.lastname, pr.birthyear, pr.fideid
+        (firstname, lastname, birthyear, fideid,complet_name)
+        SELECT gr1.firstname, gr1.lastname, pr.birthyear, pr.fideid,player_name
         FROM (
             SELECT DISTINCT
                 player_name
@@ -111,23 +112,58 @@ erd = {
         SELECT DISTINCT (eco) AS txt
         FROM games_raw
     """,
-    
-    "dim_location": """
-        (txt, txt1)
-        SELECT DISTINCT (site) AS txt, '' as txt1
-        FROM games_raw
+    "dim_city": """
+        (city) 
+        SELECT distinct(TXT) as city FROM  dim_location
+        order by city
     """,
-    
     "event": """
         (name, location_id)
-        SELECT DISTINCT (gr.event) AS name
-            , dl.id AS location_id
+        select distinct(gr.event) as name, dl.id as location_id
         FROM games_raw gr
-        LEFT JOIN dim_location dl
-            ON gr.site=dl.txt
-    """,
+        inner join dim_location on gr.site = dim_location.txt0 
+        inner join dim_city dl on dl.city = dim_location.txt
+        order by name
+    """
     
-    "game": """
+  
+
+}
+
+def import_dim_location(db,db_log,error_log):
+    '''
+    import_dim_location
+    '''
+    sql = "SELECT Distinct(Site) FROM games_raw order by Site ASC;"
+    result= select_data(db,sql)
+    for raw in result:
+        c = ''
+        txt = ''
+        txt0 = ''
+        txt1 = ''
+        
+        txt = raw[0].replace("'", "`")
+        txt0 = txt
+        
+        sites = txt0.split(' ')
+        
+        l = len(sites)-1
+        c = sites[l]
+        if c.isupper():
+            txt = txt0.replace(c, '')
+            txt = txt.rstrip()
+            txt1 = c
+            
+        sql_i = f"INSERT INTO dim_location (txt,txt1,txt0) VALUES ('{txt}','{txt1}','{txt0}')"
+        result = insert_data(db, sql_i,db_log,error_log)
+        #print(sql_i,result)
+        print(f"{c}, {txt} -> {txt1} | {result}                                                              ", end="\r")
+        
+
+def import_game_data(host, database, user, password):
+    
+    sql = {
+        "game": """
         (event_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
         SELECT DISTINCT 
             e.id AS event_id
@@ -149,21 +185,21 @@ erd = {
             , gr.blackelo
             , gr.game AS moves
         FROM games_raw gr
-        LEFT JOIN event e
+        inner JOIN event e
             ON gr.event=e.name
-        LEFT JOIN player p1
-            ON SUBSTRING_INDEX(gr.white,',',-1) = p1.firstname
-            AND SUBSTRING_INDEX(gr.white,',',1) = p1.lastname
-        LEFT JOIN player p2
-            ON SUBSTRING_INDEX(gr.black,',',-1) = p2.firstname
-            AND SUBSTRING_INDEX(gr.black,',',1) = p2.lastname
-        LEFT JOIN dim_result dr
+        inner JOIN player p1
+            ON gr.white =p1.complet_name
+        inner JOIN player p2
+            ON gr.black =p2.complet_name
+        inner JOIN dim_result dr
             ON gr.result=dr.txt
-        LEFT JOIN dim_eco de
+        inner JOIN dim_eco de
             ON gr.eco=de.txt
-    """,
-    #moves is not needed since    
-    #"moves": """(
-    #    (game_id, movenr, white, black)
-    #"""
-}
+        
+    """
+    }
+    
+    parse_datamodel(sql, host, database, user, password)
+    
+    
+    
