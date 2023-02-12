@@ -69,6 +69,26 @@ st.markdown(text)
 
 
 
+# Pie chart, where the slices will be ordered and plotted counter-clockwise:
+def make_autopct(values):
+    def my_autopct(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
+    return my_autopct      
+
+title_string = "CAUSE OF LOST DATA"
+labels = 'PNG parser', 'Date', 'SQL'
+values = [30, 34, 11]
+
+
+fig = plt.figure(2, figsize=(0.5        ,0.5))
+ax = fig.add_subplot(111)
+ax.axis('equal')
+plt.suptitle(title_string,fontsize = 4)
+ax.pie(values,  labels=labels, autopct=make_autopct(values), shadow=False, startangle=90, textprops={'fontsize': 4})
+ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+st.pyplot(fig)
         
  
 
