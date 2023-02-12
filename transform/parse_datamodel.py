@@ -28,6 +28,9 @@ def parse_datamodel(erd_dict, host, database, user, password,db_log,error_log):
                 cursor = connection.cursor()
                 cursor.execute(f"TRUNCATE TABLE {tab}")
                 cursor.execute(f"INSERT INTO {tab} {erd_dict.get(tab)}")
+                flog = open(f"{db_log}", "a")
+                flog.write(f"INSERT INTO {tab} {erd_dict.get(tab)}")
+                flog.write("\n")
                 connection.commit()
                 print(f"Data inserted successfully into table {tab}, {cursor.rowcount} rows inserted")
                 
@@ -134,7 +137,7 @@ erd = {
     """,
      "game": """
         (event_id, site_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
-        SELECT DISTINCT 
+        SELECT  
             e.id AS event_id
             , s.id AS site_id
             , p1.id AS white_player_id
