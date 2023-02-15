@@ -4,6 +4,7 @@ from db.create_tables import create_tables
 from extract_load.extract import download, extract
 from extract_load.parse_load import parse_directory
 from transform.parse_datamodel import parse_datamodel, erd
+from app_layer.load_app_layer import create_app_views, app_views
 from db.db_ddl import tables
 from helpers import read_yaml, select_data, insert_data, delete_data
 
@@ -61,13 +62,12 @@ if __name__=='__main__':
     
     
     print("TRANSFORM data into entity relationship model ....", end='\r')
-    parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
+    #parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
     
         
-   
+    print("Create Views for app layer ....", end='\r')
+    create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
     
     print("------------------------------------------------------------")
     print("------------------- END OF LOAD ----------------------------")
-    
-    
     
