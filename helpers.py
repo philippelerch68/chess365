@@ -70,7 +70,7 @@ def insert_data(db, sql,db_log,error_log):
     conn.close()
     return status
 
-def select_data(db,sql):
+def select_data(db, sql,db_log,error_log):
   #establishing the connection
   conn = mysql.connector.connect(user=db[2], password=db[3], host=db[0], database=db[1], consume_results=True)
   

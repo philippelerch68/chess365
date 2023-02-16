@@ -122,32 +122,3 @@ def read_load_file_data(dir_path, file, db, table,db_log,error_log):
             flog.write(f"{result} --")
             flog.write("\n")
             
-'''
-DONT NEED ANYMORE. .WE USE PNG parser !
-
-def content_cleaner(line):
-    """Applies some cleaning to individual lines of Games data files
-
-    Args:
-        line (str): Individual line of a Games data file
-    """
-    arr=[]
-    if line.startswith('[') and line.rstrip('\n').endswith('"]'):
-        line = line.replace('[','')
-        line = line.replace(' "]','"]')
-        line = line.replace(', "]','"')
-        line = line.replace(']','')
-        line = line.replace(' "',';"')
-        line = line.replace(', "',',""')
-        line = line.replace('\n',"")
-        arr = line.split(';')
-        
-    # FOR GAME Value.   
-    elif any(line.startswith(x) for x in ["1", "0", "{", "*"]) and line.endswith('\n'):
-            arr.append('Move')
-            line=line.replace('"',"`")
-            line = line.replace('\n',"") 
-            arr.append('"'+line+'"')
-    return arr
-    
-'''

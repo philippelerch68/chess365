@@ -5,9 +5,32 @@ import chess.pgn
 import pandas as pd
 import numpy as np
 
+
+'''
+0	1	total_files_games	200
+1	3	dim_eco	501
+2	4	dim_event	7257
+3	5	dim_federation	45
+4	6	dim_result	5
+5	7	dim_site	2179
+6	8	dim_title	2
+7	9	game	279209
+8	11	player	19846
+9	14	moves_min	4
+10	15	moves_mean	86
+11	16	moves_max	471
+12	17	total_error_import	403
+13	18	total_begin	279612
+14	19	lost_import_percent	0.14
+
+
+'''
+
+
+
 # Initialize connection.
 # Uses st.experimental_singleton to only run once.
-@st.experimental_singleton
+@st.cache_resource
 def init_connection():
     return mysql.connector.connect(**st.secrets["mysql"])
 
@@ -20,69 +43,13 @@ def run_query(query):
         return cur.fetchall()
     
 def  get_data(sql):
-    game_moves = []
-    
+    st.subheader("STATISTICS")
     result = run_query(sql)
-
     for raw in result:
-        game_id = raw[0]
-        total_game_moves = raw[1]
-        game_moves.append(total_game_moves)
-
-    df = pd.DataFrame(game_moves)
-    return df
-    
-
-def move_describe(sql):
-    df = get_data(sql)
-    describe = df.describe().apply(lambda s: s.apply('{0:.0f}'.format))
-    min = df.min().astype(int) 
-    mean = df.mean().astype(int) 
-    max = df.max().astype(int)
-    count = df.count().astype(int)
-    
-    return min,max,mean,count
-
-
-def histogram(df):
-    a=0
-     
-
-
-def duplicate_move(sql):
-    df = get_data(sql)
-    return df
+        st.text(raw)
 
     
-    
+get_data(sql ="SELECT * FROM app_stat order by id")
 
-
-# GET Describe
-def display_describe():
-    st.subheader("MOVES STATISTICS")
-    min,max,mean,count = move_describe(sql ="SELECT game_id, total_game_moves FROM move_count")
-    count = count[0]
-    st.write(f"Count : {count}")
-    st.write(f"Min : {min[0]}")
-    st.write(f"Max : {max[0]}")
-    st.write(f"Mean : {mean[0]}")
-
-
-
-def display_duplicate_move():
-    sql = '''
-    SELECT moves, count(id)
-    FROM   game
-    GROUP  BY moves
-    HAVING COUNT(moves) > 1;
-    '''
-    # st.dataframe(describe)  
-    data = duplicate_move(sql)
-    count = int((int(data.count()[0])- (1235+130+55)))
-    st.write(f" Identical moves : {count} ")
-
-             
-display_describe()             
-display_duplicate_move()        
 
     
