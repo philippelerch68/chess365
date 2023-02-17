@@ -2,7 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 
 
-def create_app_views(app_vw_dict, host, database, user, password,db_log,error_log):
+def create_app_views(app_vw_dict, host, database, user, password):
     """APP step; creates views needed for streamlit app
 
     Args:
@@ -31,15 +31,10 @@ def create_app_views(app_vw_dict, host, database, user, password,db_log,error_lo
                 
             except mysql.connector.Error as error:
                 print(f"Failed to create view {tab}: {error}")
-                flog = open(f"{error_log}", "a")
-                flog.write(f"error : {error} --")
-                flog.write("\n")
 
     except mysql.connector.Error as error:
         print(f"Failed to connect to database {database}: {error}")
-        flog = open(f"{error_log}", "a")
-        flog.write(f"error : {error} --")
-        flog.write("\n")
+
     finally:
         if connection.is_connected():
             cursor.close()
@@ -56,7 +51,7 @@ app_views = {
             , a.game_year
             , Count(a.game_id) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_white
             , Sum(a.succeed) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_white_succeed
-            , Sum(a.lose) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_white_lose
+            , Sum(a.lose) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_white_loose
             , Sum(a.draw) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_white_draw
         FROM (
             SELECT
@@ -72,7 +67,7 @@ app_views = {
                     ELSE 0 END AS draw
             FROM player p
             LEFT JOIN game gw 
-                ON p.id = gw.white_player_id
+                ON p.id = gw.white_player_id AND YEAR(gw.gamedate) >= '2019'
             LEFT JOIN dim_result dr
                 ON gw.result_id = dr.id
             ) a
@@ -84,7 +79,7 @@ app_views = {
             , a.game_year
             , Count(a.game_id) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_black
             , Sum(a.succeed) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_black_succeed
-            , Sum(a.lose) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_black_lose
+            , Sum(a.lose) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_black_loose
             , Sum(a.draw) OVER (PARTITION BY a.player_id, a.game_year) AS cnt_games_black_draw
         FROM (
             SELECT
@@ -100,7 +95,7 @@ app_views = {
                     ELSE 0 END AS draw
             FROM player p
             LEFT JOIN game gb 
-                ON p.id = gb.black_player_id
+                ON p.id = gb.black_player_id AND YEAR(gb.gamedate) >= '2019'
             LEFT JOIN dim_result dr
                 ON gb.result_id = dr.id
             ) a
@@ -115,15 +110,15 @@ app_views = {
             , p.game_year
             , cgw.cnt_games_white
             , cgw.cnt_games_white_succeed
-            , cgw.cnt_games_white_lose
+            , cgw.cnt_games_white_loose
             , cgw.cnt_games_white_draw
             , cgb.cnt_games_black
             , cgb.cnt_games_black_succeed
-            , cgb.cnt_games_black_lose
+            , cgb.cnt_games_black_loose
             , cgb.cnt_games_black_draw
             , cgw.cnt_games_white + cgb.cnt_games_black AS cnt_games
             , cgw.cnt_games_white_succeed + cgb.cnt_games_black_succeed AS cnt_games_succeed
-            , cgw.cnt_games_white_lose + cgb.cnt_games_black_lose AS cnt_games_lose
+            , cgw.cnt_games_white_loose + cgb.cnt_games_black_loose AS cnt_games_loose
             , cgw.cnt_games_white_draw + cgb.cnt_games_black_draw AS cnt_games_draw
         FROM (
             SELECT DISTINCT p.id AS playerid
@@ -132,8 +127,9 @@ app_views = {
                 , p.birthyear
                 , YEAR(g.gamedate) AS game_year
             FROM player p
-            LEFT JOIN game g
+            INNER JOIN game g
                 ON (p.id = g.white_player_id OR p.id = g.black_player_id)
+                AND YEAR(g.gamedate) >= '2019'
         ) p
         LEFT JOIN app_cnt_games_white cgw
             ON p.playerid = cgw.player_id AND p.game_year = cgw.game_year

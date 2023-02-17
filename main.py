@@ -4,10 +4,11 @@ from db.create_tables import create_tables
 from extract_load.extract import download, extract
 from extract_load.parse_load import parse_directory
 from transform.parse_datamodel import parse_datamodel, erd
-from app_layer.load_app_layer import create_app_views, app_views
 from db.db_ddl import tables
 from helpers import read_yaml, select_data, insert_data, delete_data
 from statistics.app_statistic import start_stat
+from statistics.app_views import create_app_views, app_views
+from statistics.app_insights import select_insights, app_insights
 import transform.parse_game
 
 
@@ -30,7 +31,7 @@ if __name__=='__main__':
     db_log = Path(config.get('DATA').get('db_log')) 
     error_log = Path(config.get('DATA').get('db_error_log')) 
     
-    '''
+    
     print("------------------ Starting process --------------", end='\r')
     print("------------------------------------------------------------")
     
@@ -59,17 +60,8 @@ if __name__=='__main__':
     # ------------- IMPORTING CHESS_RAW  AND PLAYERS_ RAW to dedicate tables -----------
     
     print("TRANSFORM data into entity relationship model ....", end='\r')
-    #parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
+    parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
     
-<<<<<<< HEAD
-        
-    print("Create Views for app layer ....", end='\r')
-    create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
-    
-    print("------------------------------------------------------------")
-    print("------------------- END OF LOAD ----------------------------")
-    
-=======
     print("------------------------------------------------------------")
     print("------------------- END OF LOAD ----------------------------")
     
@@ -84,8 +76,11 @@ if __name__=='__main__':
     start_stat(db,db_log,error_log)
     # ------------- END  GENERATE STATISTICS    -------------------------
     
+    # ------------- GENERATE INSIGHTS          -------------------------
+    print("Generate statistics")
+    #create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password)
+    select_insights(insights_dict=app_insights, host=db_host, database=db_database, user=db_user, password=db_password)
+    # ------------- END  GENERATE INSIGHTS    -------------------------
     
-    '''
-        
     
->>>>>>> remotes/origin/lph_streamlit
+    

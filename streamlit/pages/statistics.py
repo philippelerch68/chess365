@@ -42,14 +42,29 @@ def run_query(query):
         cur.execute(query)
         return cur.fetchall()
     
-def  get_data(sql):
-    st.subheader("STATISTICS")
+def  get_data(sql, issue):
+    st.subheader(issue)
     result = run_query(sql)
     for raw in result:
         st.text(raw)
 
-    
-get_data(sql ="SELECT * FROM app_stat order by id")
+st.header(" Insights of chess data ")    
+get_data(sql = "SELECT * FROM app_cnt_games ORDER BY game_year, cnt_games DESC", issue = "Who played the most games by year?")
+
+st.write("--------------------------")
+get_data(sql = "SELECT * FROM app_cnt_games ORDER BY game_year, cnt_games_succeed DESC", issue = "Who was the most successful player by year (success percentage)?")
+
+st.write("--------------------------")
+get_data(sql = "SELECT * FROM app_cnt_games ORDER BY game_year, cnt_games_lose DESC", issue = "Who was the least successful player by year (loose percentage)?")
+
+st.write("--------------------------")
+get_data(sql = "SELECT * FROM app_cnt_games ORDER BY game_year, cnt_games_succeed ASC", issue = "Who was the most successful player, playing white, by year (success percentage)?")
+
+st.write("--------------------------")
+get_data(sql = "SELECT * FROM app_cnt_games ORDER BY game_year, cnt_games_succeed ASC", issue = "Who was the most successful player, playing black, by year (success percentage)?")
+
+st.write("--------------------------")
+get_data(sql = "SELECT * FROM app_cnt_games ORDER BY game_year, cnt_games_succeed ASC", issue = "Which player improved in skill level in 2022?")
 
 
-    
+
