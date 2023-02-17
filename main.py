@@ -7,8 +7,8 @@ from transform.parse_datamodel import parse_datamodel, erd
 from app_layer.load_app_layer import create_app_views, app_views
 from db.db_ddl import tables
 from helpers import read_yaml, select_data, insert_data, delete_data
-
-
+from statistics.app_statistic import start_stat
+import transform.parse_game
 
 
 if __name__=='__main__':
@@ -30,40 +30,38 @@ if __name__=='__main__':
     db_log = Path(config.get('DATA').get('db_log')) 
     error_log = Path(config.get('DATA').get('db_error_log')) 
     
-
+    '''
     print("------------------ Starting process --------------", end='\r')
     print("------------------------------------------------------------")
     
     print("Creating database ................................", end='\r')
-    #create_database(host=db_host, database=db_database, user=db_user, password=db_password)
+    create_database(host=db_host, database=db_database, user=db_user, password=db_password)
 
     print("Creating tables ..................................", end='\r')
-    #create_tables(tables_dict=tables, host=db_host, database=db_database, user=db_user, password=db_password)
+    create_tables(tables_dict=tables, host=db_host, database=db_database, user=db_user, password=db_password)
     
     print("Loading compressed file ..........................", end='\r')
-    #download(url,data_dir, save_as)
+    download(url,data_dir, save_as)
 
     print("Extracting data ..................................", end='\r')
-    #extract(save_as, data_dir)
+    extract(save_as, data_dir)
 
     # -------- END OF DOWNLOAD AND EXTRACTING ----------------------------
 
     print("IMPORTING folder games files to db ...............", end='\r')
-    # parse_directory(games_dir, db, 'games_raw',db_log,error_log)
-    
-    
-    
+    parse_directory(games_dir, db, 'games_raw',db_log,error_log)
     
     print("IMPORTING folder players files to db .............                      ", end='\r')
-    # parse_directory(players_dir, db, 'players_raw',db_log,error_log)
+    parse_directory(players_dir, db, 'players_raw',db_log,error_log)
     
     # ------------- END  PART OF  CHESS_RAW  AND PLAYERS_ RAW  -------------------------
     
-    
+    # ------------- IMPORTING CHESS_RAW  AND PLAYERS_ RAW to dedicate tables -----------
     
     print("TRANSFORM data into entity relationship model ....", end='\r')
     #parse_datamodel(erd_dict=erd, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
     
+<<<<<<< HEAD
         
     print("Create Views for app layer ....", end='\r')
     create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
@@ -71,3 +69,23 @@ if __name__=='__main__':
     print("------------------------------------------------------------")
     print("------------------- END OF LOAD ----------------------------")
     
+=======
+    print("------------------------------------------------------------")
+    print("------------------- END OF LOAD ----------------------------")
+    
+    
+    # ------------- COUNT MOVES IN GAME AND ADD IN app_move_nbr ---------
+    print("Count move ...........")
+    parse_game()
+    # ------------- COUNT MOVES IN GAME  -------------------------
+    
+    # ------------- GENERATE STATISTICS          -------------------------
+    print("Generate statistics")
+    start_stat(db,db_log,error_log)
+    # ------------- END  GENERATE STATISTICS    -------------------------
+    
+    
+    '''
+        
+    
+>>>>>>> remotes/origin/lph_streamlit

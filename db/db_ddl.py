@@ -35,7 +35,7 @@ tables = {
         lastname VARCHAR(100) NULL,
         birthyear INTEGER UNSIGNED NULL,
         fideid INTEGER UNSIGNED NULL,
-        complet_name VARCHAR(100) NULL,
+        complet_name VARCHAR(100) NULL
         
         )
     """,
@@ -105,15 +105,9 @@ tables = {
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         txt VARCHAR(100)
         )
-    """,
-    
-    "moves_calc": """(
-        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        game_id INTEGER NOT NULL,
-        total_game_moves INTEGER UNSIGNED
-        
-        )
     """
+    
+
 }
 
 
