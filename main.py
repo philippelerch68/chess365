@@ -9,7 +9,8 @@ from helpers import read_yaml, select_data, insert_data, delete_data
 from statistics.app_statistic import start_stat
 from statistics.app_views import create_app_views, app_views
 from statistics.app_insights import select_insights, app_insights
-import transform.parse_game
+from transform.parse_game import count_move
+
 
 
 if __name__=='__main__':
@@ -68,7 +69,7 @@ if __name__=='__main__':
     
     # ------------- COUNT MOVES IN GAME AND ADD IN app_move_nbr ---------
     print("Count move ...........")
-    parse_game()
+    count_move()
     # ------------- COUNT MOVES IN GAME  -------------------------
     
     # ------------- GENERATE STATISTICS          -------------------------
@@ -81,6 +82,3 @@ if __name__=='__main__':
     #create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password)
     select_insights(insights_dict=app_insights, host=db_host, database=db_database, user=db_user, password=db_password)
     # ------------- END  GENERATE INSIGHTS    -------------------------
-    
-    
-    
