@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # Uses st.experimental_singleton to only run once.
 #@st.cache_resource
 def init_connection():
-    return mysql.connector.connect(**st.secrets["mysql_cp"])
+    return mysql.connector.connect(**st.secrets["mysql"])
 
 conn = init_connection()
 
