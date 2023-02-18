@@ -52,7 +52,7 @@ app_insights = {
             SELECT game_year, firstname, lastname, cnt_games
                 , ROW_NUMBER() OVER (PARTITION BY game_year ORDER BY cnt_games DESC) AS rn
             FROM app_cnt_game
-            WHERE game_year >= '2019' AND cnt_games <>''
+            WHERE game_year >= '2019' AND cnt_games > 50
         ) a
         WHERE a.rn <= 10
     """,
@@ -61,12 +61,12 @@ app_insights = {
     "app_pct_success": """
         SELECT a.* FROM (
             SELECT b.*
-                , ROW_NUMBER() OVER (PARTITION BY b.game_year ORDER BY b.pct_success DESC) AS rn
+                , ROW_NUMBER() OVER (PARTITION BY b.game_year ORDER BY b.pct_success DESC, b.cnt_games DESC) AS rn
             FROM (
                 SELECT game_year, firstname, lastname, cnt_games
                     , ROUND(cnt_games_succeed / cnt_games * 100, 1) AS pct_success
                 FROM app_cnt_game
-                WHERE game_year >= '2019' AND cnt_games <>''
+                WHERE game_year >= '2019' AND cnt_games > 50
             ) b
         ) a
         WHERE a.rn <= 10
@@ -76,12 +76,12 @@ app_insights = {
     "app_pct_loose": """
         SELECT a.* FROM (
             SELECT b.*
-                , ROW_NUMBER() OVER (PARTITION BY b.game_year ORDER BY b.pct_loose DESC) AS rn
+                , ROW_NUMBER() OVER (PARTITION BY b.game_year ORDER BY b.pct_loose DESC, b.cnt_games DESC) AS rn
             FROM (
                 SELECT game_year, firstname, lastname, cnt_games
                     , ROUND(cnt_games_loose / cnt_games * 100, 1) AS pct_loose
                 FROM app_cnt_game
-                WHERE game_year >= '2019' AND cnt_games <>''
+                WHERE game_year >= '2019' AND cnt_games > 50
             ) b
         ) a
         WHERE a.rn <= 10
@@ -96,7 +96,7 @@ app_insights = {
                 SELECT game_year, firstname, lastname, cnt_games_white
                     , ROUND(cnt_games_white_succeed / cnt_games_white * 100, 1) AS pct_white_success
                 FROM app_cnt_game
-                WHERE game_year >= '2019' AND cnt_games <>''
+                WHERE game_year >= '2019' AND cnt_games > 50
             ) b
         ) a
         WHERE a.rn <= 10
@@ -111,7 +111,7 @@ app_insights = {
                 SELECT game_year, firstname, lastname, cnt_games_black
                     , ROUND(cnt_games_black_succeed / cnt_games_black * 100, 1) AS pct_black_success
                 FROM app_cnt_game
-                WHERE game_year >= '2019' AND cnt_games <>''
+                WHERE game_year >= '2019' AND cnt_games > 50
             ) b
         ) a
         WHERE a.rn <= 10
