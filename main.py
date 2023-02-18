@@ -7,7 +7,7 @@ from transform.parse_datamodel import parse_datamodel, erd
 from db.db_ddl import tables
 from helpers import read_yaml, select_data, insert_data, delete_data
 from statistics.app_statistic import start_stat
-import transform.parse_game
+from transform.parse_game import count_move
 
 
 if __name__=='__main__':
@@ -66,7 +66,7 @@ if __name__=='__main__':
     
     # ------------- COUNT MOVES IN GAME AND ADD IN app_move_nbr ---------
     print("Count move ...........")
-    parse_game()
+    count_move()
     # ------------- COUNT MOVES IN GAME  -------------------------
     
     # ------------- GENERATE STATISTICS          -------------------------
@@ -76,5 +76,3 @@ if __name__=='__main__':
     
     
     '''
-        
-    

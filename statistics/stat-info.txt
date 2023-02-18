@@ -1,4 +1,5 @@
 
+app_statistic.py generate table app_statistic
 
 VIEW  FULL GAME DATA WITH DIMs...
 ----------

@@ -1,7 +1,7 @@
 # Philippe LERCH
 
 '''
-philippe@DDev:/Projects/Datascientest/Examens/chess365/chess_4/chess365/streamlit$ streamlit run streamlit_app.py 
+philippe@DDev:/Projects/Datascientest/Examens/chess365/chess_4/chess365/streamlit$ streamlit run main.py 
 Network URL: http://192.168.0.35:8501
 '''
 

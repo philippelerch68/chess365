@@ -1,17 +1,20 @@
 # MOve info
 # pip install mysql-connector-python
 import io
+from pathlib import Path
 import chess.pgn
 import mysql.connector
 from mysql.connector import Error
 
-if __name__=='__main__':
+def count_move():
+    
     
     host = "192.168.0.35"
     port = 3306
     database = "datascientest"
     user = "philippe"
     password = "philippe"
+    table = 'app_move_nbr'
 
     connection = mysql.connector.connect(host=host,
                                                 database=database,
@@ -20,7 +23,17 @@ if __name__=='__main__':
     cursor = connection.cursor()
 
 
-    sql="TRUNCATE TABLE app_move_nbr"
+    sql= '''
+        CREATE TABLE IF NOT EXISTS `app_move_nbr` (
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `nbr_move` INT(3) NULL,
+        PRIMARY KEY (`id`));
+    '''
+    cursor.execute(sql)
+    connection.commit()
+    
+    
+    sql=f"TRUNCATE TABLE {table}"
     cursor.execute(sql)
     connection.commit()
 
@@ -51,6 +64,6 @@ if __name__=='__main__':
                 #list_value.append([game_id,0])
                 #print(error)
             
-            sql =f"insert into app_move_nbr (id,nbr_move) values ({game_id},{a})"
+            sql =f"insert into {table} (id,nbr_move) values ({game_id},{a})"
             cursor.execute(sql)
             connection.commit()
