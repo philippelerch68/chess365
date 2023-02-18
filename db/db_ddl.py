@@ -34,7 +34,9 @@ tables = {
         firstname VARCHAR(100) NULL,
         lastname VARCHAR(100) NULL,
         birthyear INTEGER UNSIGNED NULL,
-        fideid INTEGER UNSIGNED NULL
+        fideid INTEGER UNSIGNED NULL,
+        complet_name VARCHAR(100) NULL
+        
         )
     """,
     
@@ -62,23 +64,25 @@ tables = {
         )
     """,
     
-    "event": """(
+       
+    
+    "dim_event": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(100),
-        location_id INTEGER UNSIGNED NOT NULL
+        name VARCHAR(100)
         )
     """,
     
-    "dim_location": """(
+     "dim_site": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        txt VARCHAR(100),
-        txt1 VARCHAR(100)
+        name VARCHAR(100)
         )
     """,
+    
     
     "game": """(
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         event_id INTEGER UNSIGNED NOT NULL,
+        site_id INTEGER UNSIGNED NOT NULL,
         white_player_id INTEGER UNSIGNED NOT NULL,
         black_player_id INTEGER UNSIGNED NOT NULL,
         result_id INTEGER UNSIGNED NOT NULL,
@@ -101,16 +105,9 @@ tables = {
         id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
         txt VARCHAR(100)
         )
-    """,
-    
-    "moves": """(
-        id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        game_id INTEGER NOT NULL,
-        movenr INTEGER UNSIGNED,
-        white VARCHAR(10),
-        black VARCHAR(10)
-        )
     """
+    
+
 }
 
 

@@ -11,8 +11,11 @@ def download(url, data_dir,save_as):
         url (str): URL where the data for the project is received
         save_as (str): Location and name where the zipped folder is stored
     """
-    mode = 0o755
-    os.mkdir(f"./{data_dir}", mode)
+    path_data = f"./{data_dir}"
+    isExist = os.path.exists(path_data)
+    if isExist == False :
+        mode = 0o755
+        os.mkdir(f"./{data_dir}", mode)
     
     print(f"Downloading {url}...                                                        ", end='\r')
     with urlopen(url) as file:

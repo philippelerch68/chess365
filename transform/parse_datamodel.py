@@ -1,8 +1,9 @@
 import mysql.connector
 from mysql.connector import Error
+from helpers import select_data, insert_data
 
 
-def parse_datamodel(erd_dict, host, database, user, password):
+def parse_datamodel(erd_dict, host, database, user, password,db_log,error_log):
     """DDL step; creates defined tables in database
 
     Args:
@@ -27,14 +28,23 @@ def parse_datamodel(erd_dict, host, database, user, password):
                 cursor = connection.cursor()
                 cursor.execute(f"TRUNCATE TABLE {tab}")
                 cursor.execute(f"INSERT INTO {tab} {erd_dict.get(tab)}")
+                flog = open(f"{db_log}", "a")
+                flog.write(f"INSERT INTO {tab} {erd_dict.get(tab)}")
+                flog.write("\n")
                 connection.commit()
                 print(f"Data inserted successfully into table {tab}, {cursor.rowcount} rows inserted")
                 
             except mysql.connector.Error as error:
                 print(f"Failed to insert data into table {tab}: {error}")
+                flog = open(f"{error_log}", "a")
+                flog.write(f"error : {error} --")
+                flog.write("\n")
 
     except mysql.connector.Error as error:
         print(f"Failed to connect to database {database}: {error}")
+        flog = open(f"{error_log}", "a")
+        flog.write(f"error : {error} --")
+        flog.write("\n")
     finally:
         if connection.is_connected():
             cursor.close()
@@ -47,8 +57,8 @@ def parse_datamodel(erd_dict, host, database, user, password):
 erd = {
     #player_data
     "player": """
-        (firstname, lastname, birthyear, fideid)
-        SELECT gr1.firstname, gr1.lastname, pr.birthyear, pr.fideid
+        (firstname, lastname, birthyear, fideid,complet_name)
+        SELECT gr1.firstname, gr1.lastname, pr.birthyear, pr.fideid,player_name
         FROM (
             SELECT DISTINCT
                 player_name
@@ -111,26 +121,25 @@ erd = {
         SELECT DISTINCT (eco) AS txt
         FROM games_raw
     """,
-    
-    "dim_location": """
-        (txt, txt1)
-        SELECT DISTINCT (site) AS txt, '' as txt1
-        FROM games_raw
-    """,
-    
-    "event": """
-        (name, location_id)
-        SELECT DISTINCT (gr.event) AS name
-            , dl.id AS location_id
+ 
+    "dim_event": """
+        (name)
+        select distinct(gr.event) as name
         FROM games_raw gr
-        LEFT JOIN dim_location dl
-            ON gr.site=dl.txt
+        order by name
     """,
     
-    "game": """
-        (event_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
-        SELECT DISTINCT 
+     "dim_site": """
+        (name)
+        select distinct(gr.site) as name
+        FROM games_raw gr
+        order by name
+    """,
+     "game": """
+        (event_id, site_id, white_player_id, black_player_id, result_id, eco_id, gamedate, stage, whiteelo, blackelo, moves)
+        SELECT  
             e.id AS event_id
+            , s.id AS site_id
             , p1.id AS white_player_id
             , p2.id AS black_player_id
             , dr.id AS result_id
@@ -149,21 +158,19 @@ erd = {
             , gr.blackelo
             , gr.game AS moves
         FROM games_raw gr
-        LEFT JOIN event e
+        inner JOIN dim_event e
             ON gr.event=e.name
-        LEFT JOIN player p1
-            ON SUBSTRING_INDEX(gr.white,',',-1) = p1.firstname
-            AND SUBSTRING_INDEX(gr.white,',',1) = p1.lastname
-        LEFT JOIN player p2
-            ON SUBSTRING_INDEX(gr.black,',',-1) = p2.firstname
-            AND SUBSTRING_INDEX(gr.black,',',1) = p2.lastname
-        LEFT JOIN dim_result dr
+        inner JOIN dim_site s
+            ON gr.site=s.name
+        inner JOIN player p1
+            ON gr.white =p1.complet_name
+        inner JOIN player p2
+            ON gr.black =p2.complet_name
+        inner JOIN dim_result dr
             ON gr.result=dr.txt
-        LEFT JOIN dim_eco de
+        inner JOIN dim_eco de
             ON gr.eco=de.txt
-    """,
-    #moves is not needed since    
-    #"moves": """(
-    #    (game_id, movenr, white, black)
-    #"""
+        
+    """
 }
+        

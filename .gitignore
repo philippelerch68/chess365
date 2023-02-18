@@ -167,3 +167,10 @@ cython_debug/
 #added
 #project raw data
 .data/
+*.pgn
+data/Players/
+data/Games/
+AE_ChessAnalytics.7z
+insert-error.txt
+statistics/chess_raw.ipynb
+images/game/

@@ -69,3 +69,63 @@ def insert_data(db, sql,db_log,error_log):
     # Closing the connection
     conn.close()
     return status
+
+def select_data(db, sql,db_log,error_log):
+  #establishing the connection
+  conn = mysql.connector.connect(user=db[2], password=db[3], host=db[0], database=db[1], consume_results=True)
+  
+  #Creating a cursor object using the cursor() method
+  cursor = conn.cursor(buffered=True)
+
+  # Preparing SQL
+ 
+  try:
+    # Executing the SQL command
+    cursor.execute(sql)
+    #myresult = cursor.fetchall()
+    #return myresult
+    return cursor
+
+  except:
+    # Rolling back in case of error
+    conn.rollback()
+    status ='error'
+    
+    
+def delete_data(db, sql,db_log,error_log):
+    """delete data as a row in a table of a defined database
+
+    Args:
+        db (list): List with database connection informations
+        sql (str): SQL statement that loads data to db
+
+    Returns:
+        str: Status of the recent data insert
+    """
+    #establishing the connection
+    conn = mysql.connector.connect(user=db[2], password=db[3], host=db[0], database=db[1], consume_results=True)
+    
+    #Creating a cursor object using the cursor() method
+    cursor = conn.cursor()
+
+    try:
+        # Executing the SQL command
+        cursor.execute(sql)
+        
+        # Commit your changes in the database
+        conn.commit()
+        status = 'ok'
+        #print("Data deleted")
+
+    except:
+        # Rolling back in case of error
+        conn.rollback()
+        status ='error'
+        if(status =='error'):
+                flog = open('delete-error.txt', "a")
+                flog.write(f"{sql} --")
+                flog.write("\n")
+        
+    # Closing the connection
+    conn.close()
+    return status

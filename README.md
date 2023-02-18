@@ -21,6 +21,8 @@ The project is part of the datascientest dataengineering certification.
 * Importing folder games files to db
 * Importing folder players files to db
 * Transforming data into entity relationship model
+* Building views and tables for analyzing the data
+* Running an analytics application
 
 ### Processflow
 ![Processflow](https://github.com/philippelerch68/chess365/blob/49ecc8eec75c46d0f2c7ceda8f43931699fe7e7c/db/elt_processflow.png)
@@ -35,6 +37,11 @@ The project is part of the datascientest dataengineering certification.
 * ./db/create_tables.py: Creates relevent tables on the database
 * ./extract_load/extract.py: Download Chess data from the Amazon AWS Cloud and unzip
 * ./extract_load/parse_load.py: Process Player and Games files from ./data/ and import to staging tables
+* ./statistics/app_insights.py: Analyze data and store results in tables for displaying it later on streamlit application
+* ./statistics/app_layer.py:
+* ./statistics/app_statistics.py:
+* ./statistics/app_views.py: Creating views for data analysis
+* ./streamlit/*: Analytics application
 * ./transform/parse_datamodel.py: Retreive data from staging and import them in the datamodel (3NF)
 * ./tests/test_db.py: define functional tests
 * ./config.py: basic configurations
@@ -65,6 +72,11 @@ $ python3 main.py
 Additionally you can test your environment by running
 ```
 $ python3 -m pytest
+```
+You can run the streamlit application by
+```
+$ cd ./streamlit/
+$ streamlit run main.py
 ```
 
 ## License

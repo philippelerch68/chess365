@@ -42,10 +42,12 @@ def read_load_file_data(dir_path, file, db, table,db_log,error_log):
                     try:
                         game = pgn.read_game(f)
                     except:
-                        game = ''
-                        print(f"!------Problem with file: {file} ------!")
-                        flog = open(f"error pgn.read_game : {error_log}", "a")
-                        flog.write(f"{file} -- error chess.png reading !")
+                        game = str(game)
+                        print(f"!------READING Problem with file: {file} ------!")
+                        flog = open(f"{error_log}", "a")
+                        flog.write(f"!------READING Problem with file: {file} ------!")
+                        flog.write(f"{game} ")
+                        flog.write("-----------------------------------------------------------")
                         flog.write("\n")
                         
                     if game is not None:
@@ -54,6 +56,8 @@ def read_load_file_data(dir_path, file, db, table,db_log,error_log):
                         break
                         
             for game in games:
+                move = str(game.mainline_moves())
+                move = move.replace('"','`')
                 sql = f"""INSERT INTO {table} (
                     event, site, date, round, white, black, result, whiteelo, blackelo, eco, game) 
                     VALUES ("{game.headers["Event"]}",
@@ -66,7 +70,7 @@ def read_load_file_data(dir_path, file, db, table,db_log,error_log):
                             "{game.headers["WhiteElo"]}",
                             "{game.headers["BlackElo"]}",
                             "{game.headers["ECO"]}",
-                            "{game.mainline_moves()}"
+                            "{move}"
                     )
                     """          
                 #print(sql)
@@ -112,34 +116,9 @@ def read_load_file_data(dir_path, file, db, table,db_log,error_log):
             flog.write("\n")
         
         except:
-            print(f"!------Problem with file: {file} ------!")
+            print(f"!------Player reading Problem with file: {file} ------!")
             flog = open(f"{error_log}", "a")
             flog.write(f"{file} --")
             flog.write(f"{result} --")
             flog.write("\n")
             
-
-def content_cleaner(line):
-    """Applies some cleaning to individual lines of Games data files
-
-    Args:
-        line (str): Individual line of a Games data file
-    """
-    arr=[]
-    if line.startswith('[') and line.rstrip('\n').endswith('"]'):
-        line = line.replace('[','')
-        line = line.replace(' "]','"]')
-        line = line.replace(', "]','"')
-        line = line.replace(']','')
-        line = line.replace(' "',';"')
-        line = line.replace(', "',',""')
-        line = line.replace('\n',"")
-        arr = line.split(';')
-        
-    # FOR GAME Value.   
-    elif any(line.startswith(x) for x in ["1", "0", "{", "*"]) and line.endswith('\n'):
-            arr.append('Move')
-            line=line.replace('"',"`")
-            line = line.replace('\n',"") 
-            arr.append('"'+line+'"')
-    return arr
