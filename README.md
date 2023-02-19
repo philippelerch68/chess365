@@ -39,13 +39,20 @@ The project is part of the datascientest dataengineering certification.
 * ./extract_load/parse_load.py: Process Player and Games files from ./data/ and import to staging tables
 * ./statistics/app_insights.py: Analyze data and store results in tables for displaying it later on streamlit application
 * ./statistics/app_layer.py:
-* ./statistics/app_statistics.py:
+* ./statistics/app_statistic.py: Retrieve data from tables for global analyze.
 * ./statistics/app_views.py: Creating views for data analysis
-* ./streamlit/*: Analytics application
+* ./streamlit/*: Analytics application !! secrets.toml for database authentification !!
 * ./transform/parse_datamodel.py: Retreive data from staging and import them in the datamodel (3NF)
 * ./tests/test_db.py: define functional tests
 * ./config.py: basic configurations
 * ./main.py: run the pipeline
+* ./config.yaml : basic parameters
+
+## Additional files
+***
+Application will generate some files during execution:
+* ./insert-error.txt : if integration error append
+* ./streamlit/images/game/ *.svg : chess board auto generated on game id request.
 
 ## Minimum Requirements
 ***
@@ -63,7 +70,7 @@ Software
 
 ## Run the process
 ***
-Based on an running instance of MySQL, the process will create a database and tables, and loads the chess data from Amazon AWS Cloud. You need to pass the host, user and passwort of your MySQL instance into `config.yaml`. 
+Based on an running instance of MySQL, the process will create a database and tables, and loads the chess data from Amazon AWS Cloud. You need to pass the host, user and passwort of your MySQL instance into `config.yaml`. Same issue to use streamlit application (secrets.toml for database authentification)
 ```
 $ git clone https://github.com/philippelerch68/chess365.git
 $ pip3 install requirements.txt
