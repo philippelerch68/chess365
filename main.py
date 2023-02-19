@@ -46,7 +46,9 @@ if __name__=='__main__':
 
     print("Extracting data ..................................", end='\r')
     extract(save_as, data_dir)
-
+    
+    
+    
     # -------- END OF DOWNLOAD AND EXTRACTING ----------------------------
 
     print("IMPORTING folder games files to db ...............", end='\r')
