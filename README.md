@@ -70,7 +70,7 @@ Software
 
 ## Run the process
 ***
-Based on an running instance of MySQL, the process will create a database and tables, and loads the chess data from Amazon AWS Cloud. You need to pass the host, user and passwort of your MySQL instance into `config.yaml`. Same issue to use streamlit application (secrets.toml for database authentification)
+Based on an running instance of MySQL, the process will create a database and tables, and loads the chess data from Amazon AWS Cloud. You need to pass the host, user and passwort of your MySQL instance into `config.yaml`. Same issue to use streamlit application (`secrets.toml` for database authentification)
 ```
 $ git clone https://github.com/philippelerch68/chess365.git
 $ pip3 install requirements.txt
