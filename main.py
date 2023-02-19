@@ -32,7 +32,6 @@ if __name__=='__main__':
     db_log = Path(config.get('DATA').get('db_log')) 
     error_log = Path(config.get('DATA').get('db_error_log')) 
     
-    '''
     print("------------------ Starting process --------------", end='\r')
     print("------------------------------------------------------------")
     
@@ -76,7 +75,7 @@ if __name__=='__main__':
     print("Generate statistics")
     start_stat(db,db_log,error_log)
     # ------------- END  GENERATE STATISTICS    -------------------------
-    '''
+   
     # ------------- GENERATE INSIGHTS          -------------------------
     print("Generate statistics")
     create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password)
