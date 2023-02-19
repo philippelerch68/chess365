@@ -174,3 +174,5 @@ AE_ChessAnalytics.7z
 insert-error.txt
 statistics/chess_raw.ipynb
 images/game/
+images\game\
+*.SVG
