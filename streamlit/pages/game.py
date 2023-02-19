@@ -13,7 +13,7 @@ import textwrap
 
 
 
-@st.cache_resource
+#@st.cache_resource
 def init_connection():
     return mysql.connector.connect(**st.secrets["mysql"])
 
@@ -111,11 +111,14 @@ def export_svg(id):
             game_value = raw[1]
             pgn = io.StringIO(game_value)
             game = chess.pgn.read_game(pgn)
-            path_data = f"../images/game/{game_id}"
+            path_data = f"./images/game/{game_id}"
             isExist = os.path.exists(path_data)
             if isExist == False :
-                mode = 0o755
-                os.mkdir(f"../images/game/{game_id}", mode)
+                try:
+                    mode = 0o755
+                    os.mkdir(f"./images/game/{game_id}", mode)
+                except:
+                    print("Not able to create directory !")
             try:
                 # game.mainline()  
                 board = game.board()
@@ -123,7 +126,7 @@ def export_svg(id):
                     a+=1
                     board.push(move)                     
                     boardsvg = chess.svg.board(board=board)
-                    f = open(f"../images/game/{game_id}/chess_id_{game_id}_{a}.SVG", "w")
+                    f = open(f"./images/game/{game_id}/chess_id_{game_id}_{a}.SVG", "w")
                     f.write(boardsvg)
                     f.close()
                 
@@ -228,14 +231,14 @@ if input_id :
     with tab1:
         a=export_svg(id=input_id)
         display_game(input_id)
-    #image = f"../images/game/{input_id}/chess_id_{input_id}_1.SVG"
+    #image = f"./images/game/{input_id}/chess_id_{input_id}_1.SVG"
 
 if a:
     with tab2:
         move_id = st.slider('move', 1, 1, a)    
   
 if move_id :
-    f = open(f"../images/game/{input_id}/chess_id_{input_id}_{move_id}.SVG", "r")
+    f = open(f"./images/game/{input_id}/chess_id_{input_id}_{move_id}.SVG", "r")
     image = f.read()
     with tab2:
         render_svg_example(image)
