@@ -47,7 +47,7 @@ text = f'''
 st.markdown(text,unsafe_allow_html=True)
 
 
-st.markdown("**1. Player most game played**")
+st.markdown("**1. Most game played by player**")
 st.write(years_df_app_cnt_games)
 
 st.markdown("**2. Most successful player**")
@@ -60,7 +60,7 @@ df_app_pct_loose = pd.read_sql("SELECT * FROM app_pct_loose",conn)
 years_df_app_pct_loose = df_app_pct_loose.loc[df_app_pct_loose["game_year"] == year_choice]
 st.write(years_df_app_pct_loose)
 
-st.markdown("**4. White most successful player**")
+st.markdown("**4. White player most successful**")
 df_app_pct_white_success = pd.read_sql("SELECT * FROM app_pct_white_success",conn)
 years_df_app_pct_white_success = df_app_pct_white_success.loc[df_app_pct_white_success["game_year"] == year_choice]
 st.write(years_df_app_pct_white_success)
