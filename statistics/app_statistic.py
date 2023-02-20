@@ -14,6 +14,19 @@ def start_stat(db,db_log,error_log):
         db_log (_type_): log
         error_log (_type_): error
     """
+    
+    sql= '''
+            CREATE TABLE `app_stat` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `title` VARCHAR(100) NOT NULL,
+            `data1` VARCHAR(50) NOT NULL,
+            PRIMARY KEY (`id`, `title`, `data1`),
+            UNIQUE INDEX `title_UNIQUE` (`title` ASC) VISIBLE,
+            UNIQUE INDEX `data1_UNIQUE` (`data1` ASC) VISIBLE);
+        '''
+    cursor=insert_data(db,sql,db_log,error_log)
+    
+        
     summary ={}
     summary = {
                     'total_files_games':0,
@@ -152,8 +165,5 @@ def export_stat_db(db,db_log,error_log,summary):
     tab = summary.keys()
     for k in tab:
         sql = f"INSERT INTO app_stat (title,data1) VALUES('{k}','{summary[k]}');"
-        print(sql)
         cursor=insert_data(db, sql,db_log,error_log)
-        print (cursor)
-            
-
+        

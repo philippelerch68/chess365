@@ -135,7 +135,7 @@ def display_game(id):
         id (int): id passed to DB
         
     """
-    sql =f'''SELECT * FROM datascientest.cnt_Fgame where id = {id}
+    sql =f'''SELECT * FROM app_cnt_fgame where id = {id}
     ''' 
     result= run_query(sql)
     text = ''
