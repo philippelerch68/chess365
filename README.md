@@ -34,6 +34,9 @@ The project is part of the datascientest dataengineering certification.
 ### Entity relationship diagram
 ![ERD](https://github.com/philippelerch68/chess365/blob/49ecc8eec75c46d0f2c7ceda8f43931699fe7e7c/db/erd_chessdb.png)
 
+### Streamlit dashboard
+https://github.com/philippelerch68/chess365/blob/main/streamlit/images/streamlit.png
+
 ## Modules
 ***
 * ./data/: directory, where the raw data will be stored (created automatically)
