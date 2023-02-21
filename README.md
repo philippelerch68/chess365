@@ -32,7 +32,7 @@ The project is part of the datascientest dataengineering certification.
 ![Processflow](https://github.com/philippelerch68/chess365/blob/49ecc8eec75c46d0f2c7ceda8f43931699fe7e7c/db/elt_processflow.png)
 
 ### Entity relationship diagram
-![ERD](https://github.com/philippelerch68/chess365/blob/main/db/erd_chessdb.png.png)
+![ERD](https://github.com/philippelerch68/chess365/blob/main/db/erd_chessdb.png)
 
 ### Streamlit dashboard
 ![Streamlit](https://github.com/philippelerch68/chess365/blob/main/streamlit/images/streamlit.png)
