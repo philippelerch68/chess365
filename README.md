@@ -7,7 +7,8 @@
 
 ## General Info
 ***
-The aim of this project is a dataengineering pipeline in the form of an ELT process, which loads chess data of 200 Players and their Gamehistory. The data is loaded, fitted and integrated into datamodel build on a sql database schema (MySQL). Based on that database, an analytics application is implemented.
+The aim of this project is a data engineering pipeline in the form of an ELT process, which loads chess data of 200 Players and their Game history. The data is loaded, fitted and integrated into datamodel build on a sql database schema (MySQL). Based on that database, an analytics application is implemented (Streamlit).
+*ELT process take 3 hours.*
 
 You can download the raw data from:
 
