@@ -57,7 +57,8 @@ The project is part of the datascientest dataengineering certification.
 ### Additional files
 Application will generate some files during execution:
 * ./insert-error.txt : if integration error append
-* ./streamlit/images/game/ *.svg : chess board auto generated on game id request.
+* ./streamlit/images/game/ *.svg : chess board auto generated on game id request
+* ./db.log : import log
 
 ## Minimum Requirements
 ***
