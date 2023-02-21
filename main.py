@@ -10,7 +10,8 @@ from statistics.app_statistic import start_stat
 from statistics.app_views import create_app_views, app_views
 from statistics.app_insights import select_insights, app_insights
 from transform.parse_game import count_move
-
+import subprocess
+import sys
 
 
 if __name__=='__main__':
@@ -31,8 +32,7 @@ if __name__=='__main__':
     players_dir=Path(config.get('DATA').get('players_dir'))
     db_log = Path(config.get('DATA').get('db_log')) 
     error_log = Path(config.get('DATA').get('db_error_log')) 
-    
-    
+
     print("------------------ Starting process --------------", end='\r')
     print("------------------------------------------------------------")
     
@@ -47,7 +47,9 @@ if __name__=='__main__':
 
     print("Extracting data ..................................", end='\r')
     extract(save_as, data_dir)
-
+    
+    
+    
     # -------- END OF DOWNLOAD AND EXTRACTING ----------------------------
 
     print("IMPORTING folder games files to db ...............", end='\r')
@@ -68,17 +70,22 @@ if __name__=='__main__':
     
     
     # ------------- COUNT MOVES IN GAME AND ADD IN app_move_nbr ---------
-    print("Count move ...........")
-    count_move()
+    print("Count move .....................................................")
+    count_move(host=db_host, database=db_database, user=db_user, password=db_password,db_log=db_log,error_log=error_log)
     # ------------- COUNT MOVES IN GAME  -------------------------
     
     # ------------- GENERATE STATISTICS          -------------------------
-    print("Generate statistics")
+    print("Generate General statistics  .................................")
     start_stat(db,db_log,error_log)
     # ------------- END  GENERATE STATISTICS    -------------------------
     
     # ------------- GENERATE INSIGHTS          -------------------------
-    print("Generate statistics")
-    #create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password)
+    print("Generate statistics Insights .................................")
+    create_app_views(app_vw_dict=app_views, host=db_host, database=db_database, user=db_user, password=db_password)
     select_insights(insights_dict=app_insights, host=db_host, database=db_database, user=db_user, password=db_password)
     # ------------- END  GENERATE INSIGHTS    -------------------------
+
+    print(".........END OF IMPORTATION ............")
+    print("You can now start streamlit Dashbord view")
+    print(" $ cd ./streamlit/  and  $ streamlit run main.py ")
+    print(".....................")

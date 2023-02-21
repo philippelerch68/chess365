@@ -6,22 +6,28 @@ import chess.pgn
 import mysql.connector
 from mysql.connector import Error
 
-def count_move():
+
+
+def count_move(host, database, user, password,db_log,error_log):
     
-    
-    host = "192.168.0.35"
-    port = 3306
-    database = "datascientest"
-    user = "philippe"
-    password = "philippe"
     table = 'app_move_nbr'
+    
+    try:
+        connection = mysql.connector.connect(host=host,
+                                            database=database,
+                                            user=user,
+                                            password=password)
 
-    connection = mysql.connector.connect(host=host,
-                                                database=database,
-                                                user=user,
-                                                password=password)
-    cursor = connection.cursor()
+        print(f"Connection to database {database} established successfully")
+        cursor = connection.cursor()
 
+    except mysql.connector.Error as error:
+        print(f"Failed to connect to database {database}: {error}")
+        flog = open(f"{error_log}", "a")
+        flog.write(f"error : {error} --")
+        flog.write("\n")
+
+    # Create table         
 
     sql= '''
         CREATE TABLE IF NOT EXISTS `app_move_nbr` (
@@ -33,10 +39,20 @@ def count_move():
     connection.commit()
     
     
+    # If exist
     sql=f"TRUNCATE TABLE {table}"
     cursor.execute(sql)
     connection.commit()
 
+
+    #count lines to import 
+    sql=f"select count(*) from game"
+    count=0
+    cursor.execute(sql)
+    count = cursor.fetchall()
+    
+
+    # Select and insert data
     sql ="SELECT game.id, game.moves FROM game"
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -67,3 +83,9 @@ def count_move():
             sql =f"insert into {table} (id,nbr_move) values ({game_id},{a})"
             cursor.execute(sql)
             connection.commit()
+            print(f"IMPORTING data to {table}: {game_id} / {count[0][0]}                            ", end='\r')
+            
+    if connection.is_connected():
+        cursor.close()
+        connection.close()
+        print(f"Connection to database {database} is closed")
