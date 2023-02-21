@@ -88,7 +88,7 @@ $ python3 -m pytest
 You can run the streamlit application by
 ```
 $ cd ./streamlit/
-$ streamlit run main.py
+$ streamlit run home.py
 ```
 
 ## License
