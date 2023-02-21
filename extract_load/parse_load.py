@@ -112,7 +112,7 @@ def read_load_file_data(dir_path, file, db, table,db_log,error_log):
             result = insert_data(db, sql,db_log,error_log)
             #print(f"!------log from  file: {file} ------!")
             flog = open(f"{db_log}", "a")
-            flog.write(f"{result}{sql} --")
+            flog.write(f"{result} | {sql} --")
             flog.write("\n")
         
         except:
